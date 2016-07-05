@@ -2602,7 +2602,10 @@ class ET_Builder_Element {
 					$css_property = str_replace( '_', '-', $main_option_name );
 					$important = in_array( $css_property, $important_options ) || $use_global_important ? ' !important' : '';
 
-					if ( isset( $option_settings['css'][ $main_option_name ] ) || isset( $option_settings['css']['main'] ) ) {
+					// Allow specific selector tablet and mobile, simply add _tablet or _phone suffix
+					if ( isset( $option_settings['css'][ $mobile_option ] ) && "" !== $option_settings['css'][ $mobile_option ] ) {
+						$selector = $option_settings['css'][ $mobile_option ];
+					} elseif ( isset( $option_settings['css'][ $main_option_name ] ) || isset( $option_settings['css']['main'] ) ) {
 						$selector = isset( $option_settings['css'][ $main_option_name ] ) ? $option_settings['css'][ $main_option_name ] : $option_settings['css']['main'];
 					} else {
 						$selector = $this->main_css_element;
@@ -2958,7 +2961,7 @@ class ET_Builder_Element {
 					$no_icon_styles = 'padding: 0.3em 1em !important;';
 
 					self::set_style( $function_name, array(
-						'selector'    => $css_element_processed . ',' . $css_element_processed . ':hover',
+						'selector'    => $css_element . ',' . $css_element . ':hover',
 						'declaration' => rtrim( $no_icon_styles ),
 					) );
 				} else {
@@ -3327,7 +3330,7 @@ class ET_Builder_Element {
 
 	static function get_parent_modules( $post_type = '' ) {
 		if ( ! empty( $post_type ) ) {
-			$parent_modules = ! empty( self::$parent_modules[ $post_type ] ) ? self::$parent_modules[ $post_type ] : '';
+			$parent_modules = ! empty( self::$parent_modules[ $post_type ] ) ? self::$parent_modules[ $post_type ] : array();
 		} else {
 			$parent_modules = self::$parent_modules;
 		}
@@ -3337,7 +3340,7 @@ class ET_Builder_Element {
 
 	static function get_child_modules( $post_type = '' ) {
 		if ( ! empty( $post_type ) ) {
-			$child_modules = ! empty( self::$child_modules[ $post_type ] ) ? self::$child_modules[ $post_type ] : '';
+			$child_modules = ! empty( self::$child_modules[ $post_type ] ) ? self::$child_modules[ $post_type ] : array();
 		} else {
 			$child_modules = self::$child_modules;
 		}
@@ -3435,6 +3438,7 @@ class ET_Builder_Element {
 
 		$selector    = str_replace( '%%order_class%%', ".{$order_class_name}", $style['selector'] );
 		$selector    = str_replace( '%order_class%', ".{$order_class_name}", $selector );
+		$selector    = apply_filters( 'et_pb_set_style_selector', $selector, $function_name );
 
 		$declaration = $style['declaration'];
 		// New lines are saved as || in CSS Custom settings, remove them

@@ -441,7 +441,7 @@ class ET_Authors_Widget extends WP_Widget {
 				?>
 				<li>
 					<a href="<?php echo esc_url( $url ); ?>" class="widget_list_portrait" rel="author">
-						<?php echo get_avatar( $author->ID, 150 ); ?>
+						<?php echo get_avatar( $author->ID, 150, 'mystery', esc_attr( $author->display_name ) ); ?>
 					</a>
 					<a href="<?php echo esc_url( $url ); ?>" class="widget_list_author">
 						<h3 class="title"><?php echo esc_html( $author->display_name ); ?></h3>
@@ -553,7 +553,7 @@ class ET_Ads_Widget extends WP_Widget {
 			<div class="etad<?php echo esc_attr( $new_line ); ?>">
 				<?php if ( !empty( $ad['img_url'] ) && !empty( $ad['link_url'] ) ) { ?>
 					<a href="<?php echo esc_url( $ad['link_url'] ); ?>" target="_blank">
-						<img src="<?php echo esc_url( $ad['img_url'] ); ?>" />
+						<img src="<?php echo esc_url( $ad['img_url'] ); ?>" alt="<?php echo isset( $ad['img_alt_text'] ) ? esc_attr( $ad['img_alt_text'] ) : esc_attr__( 'Advertisement', 'extra' ); ?>" />
 					</a>
 				<?php } else if ( !empty( $ad['ad_html'] ) ) { ?>
 					<?php echo $ad['ad_html']; ?>
@@ -596,6 +596,7 @@ class ET_Ads_Widget extends WP_Widget {
 				$index = 0;
 				foreach ( $ads as $ad ) {
 					$img_url = isset( $ad['img_url'] ) ? $ad['img_url'] : '';
+					$img_alt_text = isset( $ad['img_alt_text'] ) ? $ad['img_alt_text'] : esc_attr__( 'Advertisement', 'extra' );
 					$link_url = isset( $ad['link_url'] ) ? $ad['link_url'] : '';
 					$ad_html = isset( $ad['ad_html'] ) ? $ad['ad_html'] : '';
 					$ad_new_line = isset( $ad['new_line'] ) ? intval( $ad['new_line'] ) : 0;
@@ -607,6 +608,10 @@ class ET_Ads_Widget extends WP_Widget {
 						<p class="field_wrap">
 							<label for="<?php echo $this->get_ad_field_id( 'img_url', $index ); ?>"><?php esc_html_e( 'Image Url:', 'extra' ); ?></label>
 							<input class="widefat" id="<?php echo $this->get_ad_field_id( 'img_url', $index ); ?>" name="<?php echo $this->get_ad_field_name( 'img_url', $index ); ?>" type="text" value="<?php echo esc_attr( $img_url ); ?>" />
+						</p>
+						<p class="field_wrap">
+							<label for="<?php echo esc_attr( $this->get_ad_field_id( 'img_alt_text', $index ) ); ?>"><?php esc_html_e( 'Image Alt Text:', 'extra' ); ?></label>
+							<input class="widefat" id="<?php echo esc_attr( $this->get_ad_field_id( 'img_alt_text', $index ) ); ?>" name="<?php echo esc_attr( $this->get_ad_field_name( 'img_alt_text', $index ) ); ?>" type="text" value="<?php echo esc_attr( $img_alt_text ); ?>" />
 						</p>
 						<p class="field_wrap">
 							<label for="<?php echo $this->get_ad_field_id( 'link_url', $index ); ?>"><?php esc_html_e( 'Link Url:', 'extra' ); ?></label>
@@ -674,6 +679,7 @@ class ET_Ads_Widget extends WP_Widget {
 			$ad = array();
 
 			$ad['img_url'] = !empty( $ad_data['img_url'] ) ? esc_url_raw( $ad_data['img_url'] ) : '';
+			$ad['img_alt_text'] = !empty( $ad_data['img_alt_text'] ) ? esc_attr( $ad_data['img_alt_text'] ) : '';
 			$ad['link_url'] = !empty( $ad_data['link_url'] ) ? esc_url_raw( $ad_data['link_url'] ) : '';
 			$ad['ad_html'] = !empty( $ad_data['ad_html'] ) ? wp_kses( $ad_data['ad_html'], $allowed_html ) : '';
 			$ad['new_line'] = !empty( $ad_data['new_line'] ) ? 1 : 0;

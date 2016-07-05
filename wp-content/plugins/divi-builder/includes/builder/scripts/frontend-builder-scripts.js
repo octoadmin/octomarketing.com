@@ -937,11 +937,13 @@
 			$et_pb_parallax = $( '.et_parallax_bg' ),
 			$et_pb_shop = $( '.et_pb_shop' ),
 			$et_pb_post_fullwidth = $( '.single.et_pb_pagebuilder_layout.et_full_width_page' ),
-			et_is_mobile_device = navigator.userAgent.match( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/ ),
+			et_is_mobile_device = navigator.userAgent.match( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/ ) !== null,
 			et_is_ipad = navigator.userAgent.match( /iPad/ ),
+			et_is_ie9 = navigator.userAgent.match( /MSIE 9.0/ ) !== null,
 			$et_container = ! et_pb_custom.is_builder_plugin_used ? $( '.container' ) : $( '.et_pb_row' ),
 			et_container_width = $et_container.width(),
 			et_is_fixed_nav = $( 'body' ).hasClass( 'et_fixed_nav' ),
+			et_is_vertical_nav = $( 'body' ).hasClass( 'et_vertical_nav' ),
 			et_is_vertical_fixed_nav = $( 'body' ).hasClass( 'et_vertical_fixed' ),
 			et_is_rtl = $( 'body' ).hasClass( 'rtl' ),
 			et_hide_nav = $( 'body' ).hasClass( 'et_hide_nav' ),
@@ -985,7 +987,8 @@
 			var $et_top_menu = $et_menu_selector,
 				et_parent_menu_longpress_limit = 300,
 				et_parent_menu_longpress_start,
-				et_parent_menu_click = true;
+				et_parent_menu_click = true,
+				et_menu_hover_triggered = false;
 
 			// log the conversion if visitor is on Thank You page and comes from the Shop module which is the Goal
 			if ( $( '.et_pb_ab_shop_conversion' ).length && typeof et_pb_get_cookie_value( 'et_pb_ab_shop_log' ) !== 'undefined' && '' !== et_pb_get_cookie_value( 'et_pb_ab_shop_log' ) ) {
@@ -1072,11 +1075,14 @@
 				if ( ! $(this).closest( 'li.mega-menu' ).length || $(this).hasClass( 'mega-menu' ) ) {
 					$(this).addClass( 'et-show-dropdown' );
 					$(this).removeClass( 'et-hover' ).addClass( 'et-hover' );
+					et_menu_hover_triggered = true;
 				}
 			}, function() {
 				var $this_el = $(this);
 
 				$this_el.removeClass( 'et-show-dropdown' ).addClass( 'et-dropdown-removing' );
+
+				et_menu_hover_triggered = false;
 
 				setTimeout( function() {
 					if ( ! $this_el.hasClass( 'et-show-dropdown' ) ) {
@@ -1095,12 +1101,15 @@
 				} else {
 					et_parent_menu_click = false;
 
-					// Close sub-menu if toggled
-					var $et_parent_menu = $(this).parent('li');
-					if ( $et_parent_menu.hasClass( 'et-hover') ) {
-						$et_parent_menu.trigger( 'mouseleave' );
-					} else {
-						$et_parent_menu.trigger( 'mouseenter' );
+					// Some devices emulate hover event on touch, so check that hover event was not triggered to avoid extra mouseleave event triggering
+					if ( ! et_menu_hover_triggered ) {
+						// Close sub-menu if toggled
+						var $et_parent_menu = $(this).parent('li');
+						if ( $et_parent_menu.hasClass( 'et-hover') ) {
+							$et_parent_menu.trigger( 'mouseleave' );
+						} else {
+							$et_parent_menu.trigger( 'mouseenter' );
+						}
 					}
 				}
 				et_parent_menu_longpress_start = 0;
@@ -1156,7 +1165,9 @@
 				$( '.et_pb_section_video_bg' ).each( function() {
 					var $this_el = $(this);
 
-					$this_el.css( 'visibility', 'hidden' ).closest( '.et_pb_preload' ).removeClass( 'et_pb_preload' )
+					$this_el.closest( '.et_pb_preload' ).removeClass( 'et_pb_preload' )
+
+					$this_el.remove();
 				} );
 
 				$( 'body' ).addClass( 'et_mobile_device' );
@@ -1164,6 +1175,10 @@
 				if ( ! et_is_ipad ) {
 					$( 'body' ).addClass( 'et_mobile_device_not_ipad' );
 				}
+			}
+
+			if ( et_is_ie9 ) {
+				$( 'body' ).addClass( 'et_ie9' );
 			}
 
 			if ( $et_pb_video_section.length ) {
@@ -2276,6 +2291,7 @@
 						var $this_map_container = $(this),
 							$this_map = $this_map_container.children('.et_pb_map'),
 							this_map_grayscale = $this_map_container.data( 'grayscale' ) || 0,
+							is_draggable = ( et_is_mobile_device && $this_map.data('mobile-dragging') !== 'off' ) || ! et_is_mobile_device,
 							infowindow_active;
 
 						if ( this_map_grayscale !== 0 ) {
@@ -2287,6 +2303,7 @@
 							center: new google.maps.LatLng( parseFloat( $this_map.data('center-lat') ) , parseFloat( $this_map.data('center-lng') )),
 							mapTypeId: google.maps.MapTypeId.ROADMAP,
 							scrollwheel: $this_map.data('mouse-wheel') == 'on' ? true : false,
+							draggable: is_draggable,
 							panControlOptions: {
 								position: $this_map_container.is( '.et_beneath_transparent_nav' ) ? google.maps.ControlPosition.LEFT_BOTTOM : google.maps.ControlPosition.LEFT_TOP
 							},
@@ -2518,7 +2535,7 @@
 							fixed_header_height += $('#top-header').height();
 						}
 
-						if ( $('#main-header').length ) {
+						if ( $('#main-header').length && ! et_is_vertical_nav ) {
 							fixed_header_height += $('#main-header').height();
 						}
 
@@ -3389,6 +3406,17 @@
 						main_header_height = is_next_fullscreen || ! et_is_fixed_nav ? 0 : $main_header.height(),
 						top_header_height  = is_next_fullscreen || ! et_is_fixed_nav ? 0 : $top_header.height(),
 						section_bottom     = $this_section.offset().top + $this_section.outerHeight( true ) - ( wpadminbar_height + top_header_height + main_header_height );
+
+					// Fixed menu is turned off on 980px below screen
+					if ( 980 > $et_window.width() ) {
+						section_bottom += main_header_height;
+						section_bottom += top_header_height;
+					}
+
+					// Admin bar is sticked to the top of page on 600px screen below
+					if ( 600 > $et_window.width() ) {
+						section_bottom += wpadminbar_height;
+					}
 
 					if ( $this_section.length ) {
 						$( 'html, body' ).animate( { scrollTop : section_bottom }, 800 );

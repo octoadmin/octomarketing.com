@@ -45,7 +45,7 @@ get_header(); ?>
 								</style>
 								<div class="author-content">
 									<a href="<?php echo esc_url( get_author_posts_url( $author->ID ) ); ?>" title="<?php echo esc_attr( sprintf( __( 'Posts By: %s', 'extra' ), $author->display_name ) ); ?>" rel="author">
-										<?php echo get_avatar( $author->ID, 150 ); ?>
+										<?php echo get_avatar( $author->ID, 150, 'mystery', esc_attr( $author->display_name ) ); ?>
 									</a>
 									<h2 style="color:<?php echo esc_attr( $user_color ); ?>"><?php echo esc_html( $author->display_name ); ?></h2>
 									<p class="description"><?php echo esc_html( $author->description ); ?></p>

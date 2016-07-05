@@ -75,7 +75,7 @@ function extra_get_the_post_comments_link( $post_id = 0 ) {
 
 	return sprintf(
 		'<a class="comments-link" href="%s">%d <span title="%s" class="comment-bubble post-meta-icon"></span></a>',
-		esc_attr( get_the_permalink() . '#comments' ),
+		esc_attr( get_the_permalink( $post_id ) . '#comments' ),
 		esc_html( get_comments_number( $post_id ) ),
 		esc_attr( __( 'comment count', 'extra' ) )
 	);
@@ -343,7 +343,7 @@ function extra_make_fixed_stars( $rating ) {
 		}
 
 		$src = $images_base . 'star-' . $icon . '.svg';
-		$output .= '<img src="' . $src . '" class="rating-star '. $class . ' rating-star-' . $x . '" />'."\n";
+		$output .= '<img src="' . $src . '" class="rating-star '. $class . ' rating-star-' . $x . '" alt="' . esc_attr__( "Star", "extra" ) . '" />' . "\n";
 	}
 
 	return $output;
@@ -861,6 +861,8 @@ function extra_blog_feed_get_content() {
 	$show_more = sanitize_text_field( $_POST['show_more'] );
 	$show_comments = sanitize_text_field( $_POST['show_comments'] );
 	$show_rating = sanitize_text_field( $_POST['show_rating'] );
+	$use_tax_query = sanitize_text_field( $_POST['use_tax_query'] );
+	$tax_query = isset( $_POST['tax_query'] ) ? $_POST['tax_query'] : array();
 
 	// This is normally set in includes/builder/shortcodes.php in et_pb_column(),
 	// but since this is an ajax request, we need to pass this data along
@@ -887,6 +889,50 @@ function extra_blog_feed_get_content() {
 				'operator' => 'IN',
 			),
 		);
+	}
+
+	if ( $use_tax_query === '1' && ! empty( $tax_query ) ) {
+		$valid_taxonomies = get_taxonomies();
+		$valid_fields     = array( 'term_id', 'name', 'slug', 'term_taxonomy_id' );
+		$valid_operators  = array( 'IN', 'NOT IN', 'AND', 'EXISTS', 'NOT EXISTS' );
+		$sanitized_terms  = array();
+
+		foreach ( $tax_query as $taxonomy ) {
+			if ( isset( $taxonomy['taxonomy'] ) && 'category' === $taxonomy['taxonomy'] ) {
+				continue;
+			}
+
+			if ( ! isset( $taxonomy['taxonomy'] ) || ! in_array( $taxonomy['taxonomy'], $valid_taxonomies ) ) {
+				continue;
+			}
+
+			if ( ! isset( $taxonomy['field'] ) || ! in_array( $taxonomy['field'], $valid_fields ) ) {
+				continue;
+			}
+
+			if ( ! isset( $taxonomy['operator'] ) || ! in_array( $taxonomy['operator'], $valid_operators ) ) {
+				continue;
+			}
+
+			if ( ! isset( $taxonomy['terms'] ) || ! is_array( $taxonomy['terms']) || empty( $taxonomy['terms'] ) ) {
+				continue;
+			}
+
+			foreach ( $taxonomy['terms'] as $taxonomy_term ) {
+				$sanitized_terms[] = sanitize_text_field( $taxonomy_term );
+			}
+
+			$args['tax_query'][] = array(
+				'taxonomy' => sanitize_text_field( $taxonomy['taxonomy'] ),
+				'field'    => sanitize_text_field( $taxonomy['field'] ),
+				'terms'    => $sanitized_terms,
+				'operator' => sanitize_text_field( $taxonomy['operator'] ),
+			);
+		}
+
+		if ( 1 < count( $args['tax_query'] ) ) {
+			$args['tax_query']['relation'] = 'AND';
+		}
 	}
 
 	$module_posts = new WP_Query( $args );
@@ -1299,7 +1345,7 @@ function extra_get_contact_page_options( $post_id = 0 ) {
 }
 
 function extra_ajax_loader_img( $echo = true ) {
-	$img = '<img src="' . esc_url( get_template_directory_uri() ) .'/images/pagination-loading.gif" />';
+	$img = '<img src="' . esc_url( get_template_directory_uri() ) .'/images/pagination-loading.gif" alt="' . esc_attr__( "Loading", "extra" ) . '" />';
 	if ( $echo ) {
 		echo $img;
 	} else {
@@ -1641,7 +1687,7 @@ function extra_display_ad( $location, $echo = true ) {
 		if ( !empty( $adsense ) ) {
 			$output = $adsense;
 		} elseif ( !empty( $image ) && !empty( $url ) ) {
-			$output = '<a href="' . esc_url( $url ) . '"><img src="' . esc_url( $image ) .'" /></a>';
+			$output = '<a href="' . esc_url( $url ) . '"><img src="' . esc_url( $image ) . '" alt="' . esc_attr__( "Advertisement", 'extra' ) . '" /></a>';
 		}
 
 		if ( $echo ) {
@@ -1696,4 +1742,57 @@ function extra_check_feature_availability_in_post_type( $post_type, $feature_nam
 	}
 
 	return in_array( $post_type, apply_filters( "extra_feature_availability_{$feature_name}", $availability, $feature_name ) );
+}
+
+/**
+ * Check if the post authox box is enabled.
+ *
+ * This function uses get_the_id() and must be called in the post loop.
+ *
+ * @since To define
+ *
+ * @return bool Return true if enabled, false otherwise.
+ */
+function extra_is_post_author_box() {
+	$epanel_show_author = 'on' == et_get_option( 'extra_show_author_box', 'on' );
+
+	/* Return true if the ePanel author box option is enable and not disabled in the
+	 * post meta, and vise versa.
+	 */
+	if ( $epanel_show_author ) {
+		if ( true != get_post_meta( get_the_id(), '_extra_hide_author_box', true ) ) {
+			return true;
+		}
+	} else if ( true == get_post_meta( get_the_id(), '_extra_show_author_box', true ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if the related posts box is enabled.
+ *
+ * This does not check if related posts exists, see @see extra_get_post_related_posts()
+ * to get related posts. This function uses get_the_id() and must be called in the post loop.
+ *
+ * @since To define
+ *
+ * @return bool Return true if enabled, false otherwise.
+ */
+function extra_is_post_related_posts() {
+	$epanel_show_related_posts = 'on' == et_get_option( 'extra_show_related_posts', 'on' );
+
+	/* Return true if the ePanel related posts option is enable and not disabled in the
+	 * post meta, and vise versa.
+	 */
+	if ( $epanel_show_related_posts ) {
+		if ( true != get_post_meta( get_the_id(), '_extra_hide_related_posts', true ) ) {
+			return true;
+		}
+	} else if ( true == get_post_meta( get_the_id(), '_extra_show_related_posts', true ) ) {
+		return true;
+	}
+
+	return false;
 }

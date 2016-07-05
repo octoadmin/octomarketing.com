@@ -253,7 +253,7 @@
 	.et_monarch li.et_social_linkedin:hover, .et_monarch .et_social_networks.et_social_circle li.et_social_linkedin:hover i { background-color: #0f699b; }
 	.et_monarch .et_social_sidebar_border li.et_social_linkedin:hover, .et_monarch .et_social_sidebar_networks_right.et_social_sidebar_border li.et_social_linkedin:hover { border-color: #127bb6; }
 	.et_monarch .widget_monarchwidget li.et_social_linkedin { background-color: #127bb6 !important; }
-	.et_monarch .widget_monarchwidget li.et_social_linkedin:hover, .et_monarch .widget_monarchwidget .et_social_circle li.et_social_linkedin:hover { background-color: #0f699b !important; }
+	.et_monarch .widget_monarchwidget li.et_social_linkedin:hover, .et_monarch .widget_monarchwidget .et_social_circle li.et_social_linkedin:hover i { background-color: #0f699b !important; }
 
 .et_monarch .et_social_yahoo, .et_monarch .et_social_networks.et_social_circle .et_social_yahoo i { background-color: #511295; }
 	.et_monarch li.et_social_yahoo:hover, .et_monarch .et_social_networks.et_social_circle li.et_social_yahoo:hover i { background-color: #450f7f; }
@@ -391,7 +391,7 @@
 	.et_monarch li.et_social_outlook:hover, .et_monarch .et_social_networks.et_social_circle li.et_social_outlook:hover i { background-color: #0e63a6; }
 	.et_monarch .et_social_sidebar_border li.et_social_outlook:hover, .et_monarch .et_social_sidebar_networks_right.et_social_sidebar_border li.et_social_outlook:hover { border-color: #1174c3; }
 	.et_monarch .widget_monarchwidget li.et_social_outlook { background-color: #1174c3 !important; }
-	.et_monarch .widget_monarchwidget li.et_social_outlook:hover, .et_monarch .widget_monarchwidget .et_social_circle li.et_social_outlook:hover { background-color: #0e63a6 !important; }
+	.et_monarch .widget_monarchwidget li.et_social_outlook:hover, .et_monarch .widget_monarchwidget .et_social_circle li.et_social_outlook:hover i { background-color: #0e63a6 !important; }
 
 .et_monarch .et_social_blinklist, .et_monarch .et_social_networks.et_social_circle .et_social_blinklist i { background-color: #fc6d21; }
 	.et_monarch li.et_social_blinklist:hover, .et_monarch .et_social_networks.et_social_circle li.et_social_blinklist:hover i { background-color: #d65d1c; }
@@ -586,6 +586,9 @@
 .et_monarch .et_social_simple.et_social_top.et_social_withnetworknames .et_social_icon, .et_monarch .et_social_simple.et_social_top.et_social_withcounts .et_social_icon { margin-bottom: -10px; }
 .et_monarch .et_social_simple li .et_social_overlay { margin: 0 !important; display: none; }
 
+/*--------------------[BUILDER SUPPORT]--------------------*/
+.et_pb_pagebuilder_layout .et_social_inline { display: none; }
+.et_pb_pagebuilder_layout .et_pb_section .et_social_inline { display: block; }
 
 
 /*------------------------------------------------*/

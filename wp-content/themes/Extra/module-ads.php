@@ -10,7 +10,7 @@
 		<div class="etad<?php echo esc_attr( $new_line ); ?> <?php echo esc_attr( $ad['module_class'] ); ?>">
 			<?php if ( !empty( $ad['img_url'] ) && !empty( $ad['link_url'] ) ) { ?>
 				<a href="<?php echo esc_url( $ad['link_url'] ); ?>" target="_blank">
-					<img src="<?php echo esc_url( $ad['img_url'] ); ?>" />
+					<img src="<?php echo esc_url( $ad['img_url'] ); ?>" alt="<?php echo esc_attr( $ad['img_alt_text'] ); ?>" />
 				</a>
 			<?php } else if ( !empty( $ad['ad_html'] ) ) { ?>
 				<?php echo $ad['ad_html']; ?>

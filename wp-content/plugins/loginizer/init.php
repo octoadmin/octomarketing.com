@@ -5,12 +5,12 @@ if(!function_exists('add_action')){
 	exit;
 }
 
-define('LOGINIZER_VERSION', '1.1.1');
+define('LOGINIZER_VERSION', '1.2.0');
 define('LOGINIZER_DIR', WP_PLUGIN_DIR.'/'.basename(dirname(LOGINIZER_FILE)));
 define('LOGINIZER_URL', plugins_url('', LOGINIZER_FILE));
 define('LOGINIZER_PRO_URL', 'https://loginizer.com/features#compare');
 
-include_once('functions.php');
+include_once(LOGINIZER_DIR.'/functions.php');
 
 // Ok so we are now ready to go
 register_activation_hook(LOGINIZER_FILE, 'loginizer_activation');
@@ -896,13 +896,15 @@ input[type="text"], textarea, select {
 				<th style="width:10%; background:#EFEFEF;">'.__('Actual', 'loginizer').'</th>
 			</tr>';
 			
+			$wp_content = basename(dirname(dirname(dirname(__FILE__))));
+			
 			$files_to_check = array('/' => '0755',
 								'/wp-admin' => '0755',
 								'/wp-includes' => '0755',
 								'/wp-config.php' => '0444',
-								'/wp-content' => '0755',
-								'/wp-content/themes' => '0755',
-								'/wp-content/plugins' => '0755',
+								'/'.$wp_content => '0755',
+								'/'.$wp_content.'/themes' => '0755',
+								'/'.$wp_content.'/plugins' => '0755',
 								'.htaccess' => '0444');
 			
 			$root = ABSPATH;
@@ -910,7 +912,7 @@ input[type="text"], textarea, select {
 			foreach($files_to_check as $k => $v){
 				
 				$path = $root.'/'.$k;
-				$stat = stat($path);
+				$stat = @stat($path);
 				$suggested = $v;
 				$actual = substr(sprintf('%o', $stat['mode']), -4);
 				
@@ -1206,7 +1208,7 @@ function loginizer_page_brute_force(){
 	
 	// Get the logs
 	$result = array();
-	$result = lz_selectquery("SELECT * FROM `".$wpdb->prefix."loginizer_logs` ORDER BY `count` DESC LIMIT 0, 10;", 1);
+	$result = lz_selectquery("SELECT * FROM `".$wpdb->prefix."loginizer_logs` ORDER BY `time` DESC LIMIT 0, 15;", 1);
 	//print_r($result);
 	
 	// Reload the settings

@@ -15,6 +15,7 @@ $data_atts = $this->shortcode_atts_to_data_atts(array(
 	'content_length',
 	'blog_feed_module_type',
 	'hover_overlay_icon',
+	'use_tax_query'
 ));
 
 if ( 'standard' == $blog_feed_module_type && false === strpos( $category_id, ',' ) ) {

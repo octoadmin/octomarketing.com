@@ -25,8 +25,8 @@ require $et_template_directory . '/framework/functions.php';
 
 // Load theme core functions
 require $et_template_directory . '/includes/core.php';
-require $et_template_directory . '/includes/woocommerce-support.php';
-require $et_template_directory . '/includes/yoast-seo-support.php';
+require $et_template_directory . '/includes/plugins-woocommerce-support.php';
+require $et_template_directory . '/includes/plugins-seo-support.php';
 require $et_template_directory . '/includes/activation.php';
 require $et_template_directory . '/includes/customizer.php';
 require $et_template_directory . '/includes/builder-integrations.php';

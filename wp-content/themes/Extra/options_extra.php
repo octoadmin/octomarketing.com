@@ -78,7 +78,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Logo", $themename ),
-		"id"   => $shortname."_logo",
+		"id"   => $shortname . "_logo",
 		"type" => "upload",
 		"std"  => "",
 		"desc" => esc_html__( "If you would like to use your own custom logo image click the Upload Image button.", $themename ),
@@ -86,7 +86,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Favicon", $themename ),
-		"id"   => $shortname."_favicon",
+		"id"   => $shortname . "_favicon",
 		"type" => "upload",
 		"std"  => "",
 		"desc" => esc_html__( "If you would like to use your own custom favicon image click the Upload Image button.", $themename ),
@@ -180,6 +180,17 @@ $options = array(
 		"type"            => "text",
 		"validation_type" => "nohtml",
 		"desc"            => et_get_safe_localization( sprintf( __( 'Enter your MailChimp API key. You can create an api key <a target="_blank" href="%1$s">here</a>', $themename ), 'https://us3.admin.mailchimp.com/account/api/' ) ),
+	),
+	array(
+		"name"              => esc_html__( "Google API Key", $themename ),
+		"id"                => "et_google_api_settings_api_key",
+		"std"               => "",
+		"type"              => "text",
+		"validation_type"   => "nohtml",
+		'is_global'         => true,
+		'main_setting_name' => 'et_google_api_settings',
+		'sub_setting_name'  => 'api_key',
+		"desc"              => et_get_safe_localization( sprintf( __( 'The Maps module uses the Google Maps API and requires a valid Google API Key to function. Before using the map module, please make sure you have added your API key here. Learn more about how to create your Google API Key <a target="_blank" href="%1$s">here</a>.', $themename ), 'http://www.elegantthemes.com/gallery/divi/documentation/map/' ) ),
 	),
 	array(
 		"name"          => esc_html__( "Aweber Authorization", $themename ),
@@ -391,7 +402,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Number of Posts displayed on Archive pages", $themename ),
-		"id"              => $shortname."_archivenum_posts",
+		"id"              => $shortname . "_archivenum_posts",
 		"std"             => "5",
 		"type"            => "text",
 		"desc"            => esc_html__( "Here you can designate how many recent articles are displayed on the Archive pages. This option works independently from the Settings > Reading options in wp-admin.", $themename ),
@@ -408,17 +419,17 @@ $options = array(
 	),
 
 	array(
-		"name"            => esc_html__("Number of Posts displayed on Category page",$themename),
-		"id"              => $shortname."_catnum_posts",
+		"name"            => esc_html__( "Number of Posts displayed on Category page", $themename ),
+		"id"              => $shortname . "_catnum_posts",
 		"std"             => "5",
 		"type"            => "text",
 		"validation_type" => "number",
-		"desc"            => esc_html__("Here you can designate how many recent articles are displayed on the Category page. This option works independently from the Settings > Reading options in wp-admin.",$themename),
+		"desc"            => esc_html__( "Here you can designate how many recent articles are displayed on the Category page. This option works independently from the Settings > Reading options in wp-admin.", $themename ),
 	),
 
 	array(
 		"name"            => esc_html__( "Number of Posts displayed on Search pages", $themename ),
-		"id"              => $shortname."_searchnum_posts",
+		"id"              => $shortname . "_searchnum_posts",
 		"std"             => "5",
 		"type"            => "text",
 		"desc"            => esc_html__( "Here you can designate how many recent articles are displayed on the Search results pages. This option works independently from the Settings > Reading options in wp-admin.", $themename ),
@@ -427,7 +438,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Number of Posts displayed on Tag pages", $themename ),
-		"id"              => $shortname."_tagnum_posts",
+		"id"              => $shortname . "_tagnum_posts",
 		"std"             => "5",
 		"type"            => "text",
 		"desc"            => esc_html__( "Here you can designate how many recent articles are displayed on the Tag pages. This option works independently from the Settings > Reading options in wp-admin.", $themename ),
@@ -436,7 +447,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Date format", $themename ),
-		"id"              => $shortname."_date_format",
+		"id"              => $shortname . "_date_format",
 		"std"             => "M j, Y",
 		"type"            => "text",
 		"desc"            => et_get_safe_localization( __( "This option allows you to change how your dates are displayed. For more information please refer to the WordPress codex here:<a href='http://codex.wordpress.org/Formatting_Date_and_Time' target='_blank'>Formatting Date and Time</a>", $themename ) ),
@@ -447,7 +458,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Use excerpts when defined", $themename ),
-		"id"   => $shortname."_use_excerpt",
+		"id"   => $shortname . "_use_excerpt",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "This will enable the use of excerpts in posts or pages.", $themename ),
@@ -455,7 +466,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Responsive shortcodes", $themename ),
-		"id"   => $shortname."_responsive_shortcodes",
+		"id"   => $shortname . "_responsive_shortcodes",
 		"type" => "checkbox2",
 		"std"  => "on",
 		"desc" => esc_html__( "Enable this option to make shortcodes respond to various screen sizes", $themename ),
@@ -465,7 +476,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Google Fonts subsets", $themename ),
-		"id"   => $shortname."_gf_enable_all_character_sets",
+		"id"   => $shortname . "_gf_enable_all_character_sets",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "This will enable Google Fonts for Non-English languages.", $themename ),
@@ -473,7 +484,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Back To Top Button", $themename ),
-		"id"   => $shortname."_back_to_top",
+		"id"   => $shortname . "_back_to_top",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "Enable this option to display Back To Top Button while scrolling", $themename ),
@@ -544,7 +555,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Exclude pages from the navigation bar", $themename ),
-		"id"      => $shortname."_menupages",
+		"id"      => $shortname . "_menupages",
 		"type"    => "checkboxes",
 		"std"     => "",
 		"desc"    => esc_html__( "Here you can choose to remove certain pages from the navigation menu. All pages marked with an X will not appear in your navigation bar.", $themename ),
@@ -554,7 +565,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Show dropdown menus", $themename ),
-		"id"   => $shortname."_enable_dropdowns",
+		"id"   => $shortname . "_enable_dropdowns",
 		"type" => "checkbox",
 		"std"  => "on",
 		"desc" => esc_html__( "If you would like to remove the dropdown menus from the pages navigation bar disable this feature.", $themename ),
@@ -562,7 +573,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Display Home link", $themename ),
-		"id"   => $shortname."_home_link",
+		"id"   => $shortname . "_home_link",
 		"type" => "checkbox2",
 		"std"  => "on",
 		"desc" => esc_html__( "By default the theme creates a Home link in the default created menu, that when clicked leads back to your blog's homepage. If however, you are using a static homepage and have already created a page called Home to use, this will result in a duplicate link. In this case you should disable this feature to remove the link.", $themename ),
@@ -572,7 +583,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Sort Pages Links", $themename ),
-		"id"      => $shortname."_sort_pages",
+		"id"      => $shortname . "_sort_pages",
 		"type"    => "select",
 		"std"     => "post_title",
 		"desc"    => esc_html__( "Here you can choose to sort your pages links.", $themename ),
@@ -589,7 +600,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Order Pages Links by Ascending/Descending", $themename ),
-		"id"      => $shortname."_order_page",
+		"id"      => $shortname . "_order_page",
 		"type"    => "select",
 		"std"     => "asc",
 		"desc"    => esc_html__( "Here you can choose to reverse the order that your pages links are displayed. You can choose between ascending and descending.", $themename ),
@@ -601,7 +612,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Number of dropdown tiers shown", $themename ),
-		"id"              => $shortname."_tiers_shown_pages",
+		"id"              => $shortname . "_tiers_shown_pages",
 		"type"            => "text",
 		"std"             => "3",
 		"desc"            => esc_html__( "This option allows you to control how many tiers your pages dropdown menu has in the default theme created main menu. Increasing the number allows for additional menu items to be shown. This setting is not applicable If you are using a custom menu and not the default theme created main menu.", $themename ),
@@ -623,7 +634,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Exclude categories from the navigation bar", $themename ),
-		"id"      => $shortname."_menucats",
+		"id"      => $shortname . "_menucats",
 		"type"    => "checkboxes",
 		"std"     => "",
 		"desc"    => esc_html__( "Here you can choose to remove certain categories from the navigation menu. All categories marked with an X will not appear in your navigation bar.", $themename ),
@@ -633,7 +644,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Show dropdown menus", $themename ),
-		"id"   => $shortname."_enable_dropdowns_categories",
+		"id"   => $shortname . "_enable_dropdowns_categories",
 		"type" => "checkbox",
 		"std"  => "on",
 		"desc" => esc_html__( "If you would like to remove the dropdown menus from the categories navigation bar disable this feature.", $themename ),
@@ -641,7 +652,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Hide empty categories", $themename ),
-		"id"   => $shortname."_categories_empty",
+		"id"   => $shortname . "_categories_empty",
 		"type" => "checkbox",
 		"std"  => "on",
 		"desc" => esc_html__( "If you would like categories to be displayed in your navigationbar that don't have any posts in them then disable this option. By default empty categories are hidden", $themename ),
@@ -651,7 +662,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Number of dropdown tiers shown", $themename ),
-		"id"              => $shortname."_tiers_shown_categories",
+		"id"              => $shortname . "_tiers_shown_categories",
 		"type"            => "text",
 		"std"             => "3",
 		"desc"            => esc_html__( "This options allows you to control how many teirs your pages dropdown menu has. Increasing the number allows for additional menu items to be shown.", $themename ),
@@ -662,7 +673,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Sort Categories Links by Name/ID/Slug/Count/Term Group", $themename ),
-		"id"      => $shortname."_sort_cat",
+		"id"      => $shortname . "_sort_cat",
 		"type"    => "select",
 		"std"     => "name",
 		"desc"    => esc_html__( "By default pages are sorted by name. However if you would rather have them sorted by ID you can adjust this setting.", $themename ),
@@ -677,7 +688,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Order Category Links by Ascending/Descending", $themename ),
-		"id"      => $shortname."_order_cat",
+		"id"      => $shortname . "_order_cat",
 		"type"    => "select",
 		"std"     => "asc",
 		"desc"    => esc_html__( "Here you can choose to reverse the order that your categories links are displayed. You can choose between ascending and descending.", $themename ),
@@ -699,7 +710,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Disable top tier dropdown menu links", $themename ),
-		"id"   => $shortname."_disable_toptier",
+		"id"   => $shortname . "_disable_toptier",
 		"type" => "checkbox2",
 		"std"  => "false",
 		"desc" => esc_html__( "In some cases users will want to create parent categories or links as placeholders to hold a list of child links or categories. In this case it is not desirable to have the parent links lead anywhere, but instead merely serve an organizational function. Enabling this options will remove the links from all parent pages/categories so that they don't lead anywhere when clicked.", $themename ),
@@ -753,7 +764,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Choose which items to display in the postinfo section", $themename ),
-		"id"      => $shortname."_postinfo2",
+		"id"      => $shortname . "_postinfo2",
 		"type"    => "different_checkboxes",
 		"std"     => array(
 			"author",
@@ -774,10 +785,26 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Show comments on posts", $themename ),
-		"id"   => $shortname."_show_postcomments",
+		"id"   => $shortname . "_show_postcomments",
 		"type" => "checkbox",
 		"std"  => "on",
 		"desc" => esc_html__( "You can disable this option if you want to remove the comments and comment form from single post pages.", $themename ),
+	),
+
+	array(
+		'name' => esc_html__( 'Show author box', $themename ),
+		'id'   => "{$shortname}_show_author_box",
+		'type' => 'checkbox',
+		'std'  => 'on',
+		'desc' => esc_html__( 'You can disable this option if you want to remove the author box from single post pages.', $themename ),
+	),
+
+	array(
+		'name' => esc_html__( 'Show related posts', $themename ),
+		'id'   => "{$shortname}_show_related_posts",
+		'type' => 'checkbox',
+		'std'  => 'on',
+		'desc' => esc_html__( 'You can disable this option if you want to remove the related posts from single post pages.', $themename ),
 	),
 
 	array( "type" => "clearfix"),
@@ -808,7 +835,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Show comments on pages", $themename ),
-		"id"   => $shortname."_show_pagescomments",
+		"id"   => $shortname . "_show_pagescomments",
 		"type" => "checkbox2",
 		"std"  => "false",
 		"desc" => esc_html__( "By default comments are not placed on pages, however, if you would like to allow people to comment on your pages simply enable this option.", $themename ),
@@ -828,7 +855,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Post info section", $themename ),
-		"id"      => $shortname."_postinfo1",
+		"id"      => $shortname . "_postinfo1",
 		"type"    => "different_checkboxes",
 		"std"     => array(
 			"author",
@@ -907,7 +934,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable custom title", $themename ),
-		"id"   => $shortname."_seo_home_title",
+		"id"   => $shortname . "_seo_home_title",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "By default the theme uses a combination of your blog name and your blog description, as defined when you created your blog, to create your homepage titles. However if you want to create a custom title then simply enable this option and fill in the custom title field below.", $themename ),
@@ -915,7 +942,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable meta description", $themename ),
-		"id"   => $shortname."_seo_home_description",
+		"id"   => $shortname . "_seo_home_description",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "By default the theme uses your blog description, as defined when you created your blog, to fill in the meta description field. If you would like to use a different description then enable this option and fill in the custom description field below.", $themename ),
@@ -923,7 +950,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable meta keywords", $themename ),
-		"id"   => $shortname."_seo_home_keywords",
+		"id"   => $shortname . "_seo_home_keywords",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "By default the theme does not add keywords to your header. Most search engines don't use keywords to rank your site anymore, but some people define them anyway just in case. If you want to add meta keywords to your header then enable this option and fill in the custom keywords field below.", $themename ),
@@ -931,7 +958,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable canonical URL's", $themename ),
-		"id"   => $shortname."_seo_home_canonical",
+		"id"   => $shortname . "_seo_home_canonical",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "Canonicalization helps to prevent the indexing of duplicate content by search engines, and as a result, may help avoid duplicate content penalties and pagerank degradation. Some pages may have different URLs all leading to the same place. For example domain.com, domain.com/index.html, and www.domain.com are all different URLs leading to your homepage. From a search engine's perspective these duplicate URLs, which also occur often due to custom permalinks, may be treaded individually instead of as a single destination. Defining a canonical URL tells the search engine which URL you would like to use officially. The theme bases its canonical URLs off your permalinks and the domain name defined in the settings tab of wp-admin.", $themename ),
@@ -941,7 +968,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Homepage custom title (if enabled)", $themename ),
-		"id"              => $shortname."_seo_home_titletext",
+		"id"              => $shortname . "_seo_home_titletext",
 		"type"            => "text",
 		"std"             => "",
 		"desc"            => esc_html__( "If you have enabled custom titles you can add your custom title here. Whatever you type here will be placed between the < title >< /title > tags in header.php", $themename ),
@@ -950,7 +977,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Homepage meta description (if enabled)", $themename ),
-		"id"              => $shortname."_seo_home_descriptiontext",
+		"id"              => $shortname . "_seo_home_descriptiontext",
 		"type"            => "textarea",
 		"std"             => "",
 		"desc"            => esc_html__( "If you have enabled meta descriptions you can add your custom description here.", $themename ),
@@ -959,7 +986,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Homepage meta keywords (if enabled)", $themename ),
-		"id"              => $shortname."_seo_home_keywordstext",
+		"id"              => $shortname . "_seo_home_keywordstext",
 		"type"            => "text",
 		"std"             => "",
 		"desc"            => esc_html__( "If you have enabled meta keywords you can add your custom keywords here. Keywords should be separated by comas. For example: wordpress,themes,templates,elegant", $themename ),
@@ -968,7 +995,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "If custom titles are disabled, choose autogeneration method", $themename ),
-		"id"      => $shortname."_seo_home_type",
+		"id"      => $shortname . "_seo_home_type",
 		"type"    => "select",
 		"std"     => "BlogName | Blog description",
 		"options" => array(
@@ -981,7 +1008,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Define a character to separate BlogName and Post title", $themename ),
-		"id"              => $shortname."_seo_home_separate",
+		"id"              => $shortname . "_seo_home_separate",
 		"type"            => "text",
 		"std"             => " | ",
 		"desc"            => esc_html__( "Here you can change which character separates your blog title and post name when using autogenerated post titles. Common values are | or -", $themename ),
@@ -1000,7 +1027,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable custom titles", $themename ),
-		"id"   => $shortname."_seo_single_title",
+		"id"   => $shortname . "_seo_single_title",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "By default the theme creates post titles based on the title of your post and your blog name. If you would like to make your meta title different than your actual post title you can define a custom title for each post using custom fields. This option must be enabled for custom titles to work, and you must choose a custom field name for your title below.", $themename ),
@@ -1008,7 +1035,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable custom description", $themename ),
-		"id"   => $shortname."_seo_single_description",
+		"id"   => $shortname . "_seo_single_description",
 		"type" => "checkbox2",
 		"std"  => "false",
 		"desc" => esc_html__( "If you would like to add a meta description to your post you can do so using custom fields. This option must be enabled for descriptions to be displayed on post pages. You can add your meta description using custom fields based off the custom field name you define below.", $themename ),
@@ -1018,7 +1045,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable custom keywords", $themename ),
-		"id"   => $shortname."_seo_single_keywords",
+		"id"   => $shortname . "_seo_single_keywords",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "If you would like to add meta keywords to your post you can do so using custom fields. This option must be enabled for keywords to be displayed on post pages. You can add your meta keywords using custom fields based off the custom field name you define below.", $themename ),
@@ -1026,7 +1053,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable canonical URL's", $themename ),
-		"id"   => $shortname."_seo_single_canonical",
+		"id"   => $shortname . "_seo_single_canonical",
 		"type" => "checkbox2",
 		"std"  => "false",
 		"desc" => esc_html__( "Canonicalization helps to prevent the indexing of duplicate content by search engines, and as a result, may help avoid duplicate content penalties and pagerank degradation. Some pages may have different URL's all leading to the same place. For example domain.com, domain.com/index.html, and www.domain.com are all different URLs leading to your homepage. From a search engine's perspective these duplicate URLs, which also occur often due to custom permalinks, may be treaded individually instead of as a single destination. Defining a canonical URL tells the search engine which URL you would like to use officially. The theme bases its canonical URLs off your permalinks and the domain name defined in the settings tab of wp-admin.", $themename ),
@@ -1036,7 +1063,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Custom field Name to be used for title", $themename ),
-		"id"              => $shortname."_seo_single_field_title",
+		"id"              => $shortname . "_seo_single_field_title",
 		"type"            => "text",
 		"std"             => "seo_title",
 		"desc"            => esc_html__( "When you define your title using custom fields you should use this value for the custom field Name. The Value of your custom field should be the custom title you would like to use.", $themename ),
@@ -1045,7 +1072,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Custom field Name to be used for description", $themename ),
-		"id"              => $shortname."_seo_single_field_description",
+		"id"              => $shortname . "_seo_single_field_description",
 		"type"            => "text",
 		"std"             => "seo_description",
 		"desc"            => esc_html__( "When you define your meta description using custom fields you should use this value for the custom field Name. The Value of your custom field should be the custom description you would like to use.", $themename ),
@@ -1054,7 +1081,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Custom field Name to be used for keywords", $themename ),
-		"id"              => $shortname."_seo_single_field_keywords",
+		"id"              => $shortname . "_seo_single_field_keywords",
 		"type"            => "text",
 		"std"             => "seo_keywords",
 		"desc"            => esc_html__( "When you define your keywords using custom fields you should use this value for the custom field Name. The Value of your custom field should be the meta keywords you would like to use, separated by comas.", $themename ),
@@ -1063,7 +1090,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "If custom titles are disabled, choose autogeneration method", $themename ),
-		"id"      => $shortname."_seo_single_type",
+		"id"      => $shortname . "_seo_single_type",
 		"type"    => "select",
 		"std"     => "Post title | BlogName",
 		"options" => array(
@@ -1076,7 +1103,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Define a character to separate BlogName and Post title", $themename ),
-		"id"              => $shortname."_seo_single_separate",
+		"id"              => $shortname . "_seo_single_separate",
 		"type"            => "text",
 		"std"             => " | ",
 		"desc"            => esc_html__( "Here you can change which character separates your blog title and post name when using autogenerated post titles. Common values are | or -", $themename ),
@@ -1095,7 +1122,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable canonical URL's", $themename ),
-		"id"   => $shortname."_seo_index_canonical",
+		"id"   => $shortname . "_seo_index_canonical",
 		"type" => "checkbox",
 		"std"  => "false",
 		"desc" => esc_html__( "Canonicalization helps to prevent the indexing of duplicate content by search engines, and as a result, may help avoid duplicate content penalties and pagerank degradation. Some pages may have different URL's all leading to the same place. For example domain.com, domain.com/index.html, and www.domain.com are all different URLs leading to your homepage. From a search engine's perspective these duplicate URLs, which also occur often due to custom permalinks, may be treaded individually instead of as a single destination. Defining a canonical URL tells the search engine which URL you would like to use officially. The theme bases its canonical URLs off your permalinks and the domain name defined in the settings tab of wp-admin.", $themename ),
@@ -1103,7 +1130,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable meta descriptions", $themename ),
-		"id"   => $shortname."_seo_index_description",
+		"id"   => $shortname . "_seo_index_description",
 		"type" => "checkbox2",
 		"std"  => "false",
 		"desc" => esc_html__( "Check this box if you want to display meta descriptions on category/archive pages. The description is based off the category description you choose when creating/edit your category in wp-admin.", $themename ),
@@ -1113,7 +1140,7 @@ $options = array(
 
 	array(
 		"name"    => esc_html__( "Choose title autogeneration method", $themename ),
-		"id"      => $shortname."_seo_index_type",
+		"id"      => $shortname . "_seo_index_type",
 		"type"    => "select",
 		"std"     => "Category name | BlogName",
 		"options" => array(
@@ -1126,7 +1153,7 @@ $options = array(
 
 	array(
 		"name"            => esc_html__( "Define a character to separate BlogName and Post title", $themename ),
-		"id"              => $shortname."_seo_index_separate",
+		"id"              => $shortname . "_seo_index_separate",
 		"type"            => "text",
 		"std"             => " | ",
 		"desc"            => esc_html__( "Here you can change which character separates your blog title and index page name when using autogenerated post titles. Common values are | or -", $themename ),
@@ -1169,7 +1196,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable header code", $themename ),
-		"id"   => $shortname."_integrate_header_enable",
+		"id"   => $shortname . "_integrate_header_enable",
 		"type" => "checkbox",
 		"std"  => "on",
 		"desc" => esc_html__( "Disabling this option will remove the header code below from your blog. This allows you to remove the code while saving it for later use.", $themename ),
@@ -1177,7 +1204,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable body code", $themename ),
-		"id"   => $shortname."_integrate_body_enable",
+		"id"   => $shortname . "_integrate_body_enable",
 		"type" => "checkbox2",
 		"std"  => "on",
 		"desc" => esc_html__( "Disabling this option will remove the body code below from your blog. This allows you to remove the code while saving it for later use.", $themename ),
@@ -1187,7 +1214,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable single top code", $themename ),
-		"id"   => $shortname."_integrate_singletop_enable",
+		"id"   => $shortname . "_integrate_singletop_enable",
 		"type" => "checkbox",
 		"std"  => "on",
 		"desc" => esc_html__( "Disabling this option will remove the single top code below from your blog. This allows you to remove the code while saving it for later use.", $themename ),
@@ -1195,7 +1222,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Enable single bottom code", $themename ),
-		"id"   => $shortname."_integrate_singlebottom_enable",
+		"id"   => $shortname . "_integrate_singlebottom_enable",
 		"type" => "checkbox2",
 		"std"  => "on",
 		"desc" => esc_html__( "Disabling this option will remove the single bottom code below from your blog. This allows you to remove the code while saving it for later use.", $themename ),
@@ -1205,7 +1232,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Add code to the < head > of your blog", $themename ),
-		"id"   => $shortname."_integration_head",
+		"id"   => $shortname . "_integration_head",
 		"type" => "textarea",
 		"std"  => "",
 		"desc" => esc_html__( "Any code you place here will appear in the head section of every page of your blog. This is useful when you need to add javascript or css to all pages.", $themename ),
@@ -1213,7 +1240,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Add code to the < body > (good for tracking codes such as google analytics)", $themename ),
-		"id"   => $shortname."_integration_body",
+		"id"   => $shortname . "_integration_body",
 		"type" => "textarea",
 		"std"  => "",
 		"desc" => esc_html__( "Any code you place here will appear in body section of all pages of your blog. This is usefull if you need to input a tracking pixel for a state counter such as Google Analytics.", $themename ),
@@ -1221,7 +1248,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Add code to the top of your posts", $themename ),
-		"id"   => $shortname."_integration_single_top",
+		"id"   => $shortname . "_integration_single_top",
 		"type" => "textarea",
 		"std"  => "",
 		"desc" => esc_html__( "Any code you place here will be placed at the top of all single posts. This is useful if you are looking to integrating things such as social bookmarking links.", $themename ),
@@ -1229,7 +1256,7 @@ $options = array(
 
 	array(
 		"name" => esc_html__( "Add code to the bottom of your posts, before the comments", $themename ),
-		"id"   => $shortname."_integration_single_bottom",
+		"id"   => $shortname . "_integration_single_bottom",
 		"type" => "textarea",
 		"std"  => "",
 		"desc" => esc_html__( "Any code you place here will be placed at the top of all single posts. This is useful if you are looking to integrating things such as social bookmarking links.", $themename ),

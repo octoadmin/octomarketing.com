@@ -1,12 +1,12 @@
-=== WCK - Custom Fields and Custom Post Types Creator === 
+=== WCK - Custom Post Types and Custom Fields Creator ===
 
 Contributors: cozmoslabs, reflectionmedia, madalin.ungureanu, sareiodata, adispiac
 Donate link: http://www.cozmoslabs.com/wordpress-creation-kit/
-Tags: custom fields, custom field, wordpress custom fields, advanced custom fields, custom post type, custom post types, post types, cpt, post type, repeater fields, repeater, repeatable fields, meta box, metabox, taxonomy, taxonomies, custom taxonomy, custom taxonomies, custom, custom fields creator, post meta, meta, get_post_meta, post creator, cck, content types, types
+Tags: custom fields, custom field, wordpress custom fields, custom post type, custom post types, repeater fields, meta box, metabox, custom taxonomy, custom fields creator, post meta
 
 Requires at least: 3.1
-Tested up to: 4.5.2
-Stable tag: 1.2.6
+Tested up to: 4.5.3
+Stable tag: 1.2.9
 
 A must have tool for creating custom fields, custom post types and taxonomies, fast and without any programming knowledge.
 
@@ -143,6 +143,22 @@ Creating a taxonomy generally automatically creates a special query variable usi
 10. Taxonomy listing
 
 == Changelog ==
+= 1.2.9 =
+* Added Lables field in Custom Fields Creator next to Options for checkboxes, selects and radios
+
+= 1.2.8 =
+* Added Phone field type
+* Added HTML field type
+* Added Time Picker field type
+* Added Default Text for textarea field instead of Default Value
+
+= 1.2.7 =
+* Added Heading field type
+* Added Colorpicker field type
+* Added Currency field type
+* Added number of rows and readonly options to the textarea field
+* Added error notice for users with a php version lower than 5.3.0 on the settings page
+
 = 1.2.6 =
 * Small change in saving single metaboxes
 * Fixed a possible conflict with ACF Pro

@@ -1,3 +1,11 @@
+version 1.3.1 ( updated 06-21-2016 )
+- Fixed the issue with Inline Sharing buttons jumping on page load
+- Fixed the issue with wrong hover effect for Outlook and Linkedin circle icons
+	* css/style.css
+- Fixed an SQL error that showed up on posts/pages sharing stats page in some cases
+- Fixed the issue with "Display on Home" option working incorrectly with some themes
+	* monarch.php
+
 version 1.3 ( updated 05-16-2016 )
 - Fixed some issues with Facebook API calls
 	* monarch.php

@@ -293,7 +293,7 @@ function extra_load_scripts_styles(){
 	$extra_scripts_dependencies = apply_filters( 'extra_scripts_dependencies', array( 'jquery', 'imagesloaded' ) );
 
 	// Load dependencies conditionally
-	if ( is_page_template( 'page-template-authors.php' ) || 'Masonry' === et_get_option( 'archive_list_style', 'Standard' ) ) {
+	if ( is_page_template( 'page-template-authors.php' ) || 'Masonry' === et_get_option( 'archive_list_style', 'Standard' ) || is_page_template( 'page-template-blog-feed.php' ) ) {
 		$extra_scripts_dependencies[] = 'salvattore';
 	}
 
@@ -827,7 +827,7 @@ function extra_print_dynamic_styles_sidebar_width_css_output( $output, $option_p
 add_filter( 'extra_print_dynamic_styles-sidebar_width-width-css_output', 'extra_print_dynamic_styles_sidebar_width_css_output', 10, 3 );
 
 function et_extra_enqueue_google_maps_api() {
-	wp_enqueue_script( 'google-maps-api', add_query_arg( array( 'v' => 3, 'sensor' => 'false' ), is_ssl() ? 'https://maps-api-ssl.google.com/maps/api/js' : 'http://maps.google.com/maps/api/js' ), array(), '3', true );
+	wp_enqueue_script( 'google-maps-api', esc_url( add_query_arg( array( 'key' => et_pb_get_google_api_key(), 'callback' => 'initMap' ), is_ssl() ? 'https://maps.googleapis.com/maps/api/js' : 'http://maps.googleapis.com/maps/api/js' ) ), array(), '3', true );
 }
 
 function extra_register_sidebars() {

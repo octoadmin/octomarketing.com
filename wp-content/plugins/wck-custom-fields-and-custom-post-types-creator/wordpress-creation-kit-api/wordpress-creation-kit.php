@@ -280,41 +280,52 @@ class Wordpress_Creation_Kit{
         else
             $single_prefix = '';
 
-            $element .= '<label for="'. $single_prefix . esc_attr( Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details ) ) .'" class="field-label">'. apply_filters( "wck_label_{$meta}_". Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details  ), ucfirst($details['title']) ) .':';
-		if( !empty( $details['required'] ) && $details['required'] )
-			$element .= '<span class="required">*</span>';
-		$element .= '</label>';
-		
-		$element .= '<div class="mb-right-column">';	
-		
-		/* 
-		include actual field type
-		possible field types: text, textarea, select, checkbox, radio, upload, wysiwyg editor, datepicker, country select, user select, cpt select
-		*/
-		
-		if( function_exists( 'wck_nr_get_repeater_boxes' ) ){
-			$cfc_titles = wck_nr_get_repeater_boxes();
-			if( in_array( $details['type'], $cfc_titles ) ){
-				$details['type'] = 'nested repeater';
+		if( $details['type'] !== 'heading' && $details['type'] !== 'html' ) {
+			$element .= '<label for="'. $single_prefix . esc_attr( Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details ) ) .'" class="field-label">'. apply_filters( "wck_label_{$meta}_". Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details  ), ucfirst($details['title']) ) .':';
+			if( !empty( $details['required'] ) && $details['required'] )
+				$element .= '<span class="required">*</span>';
+			$element .= '</label>';
+		} elseif( $details['type'] === 'heading' ) {
+			if( file_exists( dirname( __FILE__ ) . '/fields/heading.php' ) ) {
+				require( dirname( __FILE__ ) . '/fields/heading.php' );
+			}
+
+			if( !empty( $details['description'] ) ){
+				$element .= '<p class="description">'. $details['description'].'</p>';
 			}
 		}
-			
-		
-		if( file_exists( dirname( __FILE__ ).'/fields/'.$details['type'].'.php' ) ){
-			require( dirname( __FILE__ ).'/fields/'.$details['type'].'.php' );
+
+		if( $details['type'] !== 'heading' ) {
+			$element .= '<div class="mb-right-column">';
+
+			/*
+			include actual field type
+			possible field types: heading, text, textarea, select, checkbox, radio, upload, wysiwyg editor, datepicker, colorpicker, country select, user select, cpt select
+			*/
+
+			if( function_exists( 'wck_nr_get_repeater_boxes' ) ) {
+				$cfc_titles = wck_nr_get_repeater_boxes();
+				if( in_array( $details['type'], $cfc_titles ) ) {
+					$details['type'] = 'nested repeater';
+				}
+			}
+
+			if( file_exists( dirname( __FILE__ ) . '/fields/' . $details['type'] . '.php' ) ) {
+				require( dirname( __FILE__ ) . '/fields/' . $details['type'] . '.php' );
+			}
+
+			if( ! empty( $details['description'] ) ) {
+				$element .= '<p class="description">' . $details['description'] . '</p>';
+			}
+
+			$element .= '</div><!-- .mb-right-column -->';
 		}
-		
-		if( !empty( $details['description'] ) ){
-			$element .= '<p class="description">'. $details['description'].'</p>';
-		}
-		
-		$element .= '</div><!-- .mb-right-column -->';
 
 		$element = apply_filters( "wck_output_form_field", $element, $meta, $details);
 		$element = apply_filters( "wck_output_form_field_{$meta}_" . Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details ), $element );
 
 		return $element;
-				
+
 	}
 	
 		
@@ -543,6 +554,8 @@ class Wordpress_Creation_Kit{
                     $display_value = implode( ', ', $value );
                 } elseif ( $details['type'] == 'select' ){
                     $display_value = '<pre>' . __(self::wck_get_entry_field_select( $value, $details ), 'profilebuilder') . '</pre>';
+                } elseif ( $details['type'] == 'map' ){
+                    $display_value = '<pre>' . ( !empty( $value ) ? count( $value ) : 0 ) . ' ' . __( 'Map Markers', 'wck' ) . '</pre>';
                 }else {
 					$display_value = '<pre>'.htmlspecialchars( $value ) . '</pre>';
 				}
@@ -552,9 +565,11 @@ class Wordpress_Creation_Kit{
 				/*check for nested repeater type and set it acordingly */
 							if( strpos( $details['type'], 'CFC-') === 0 )
 									$details['type'] = 'nested-repeater';
-									
-				$list .= '<li class="row-'. esc_attr( Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details ) ) .'" data-type="'.$details['type'].'"><strong>'.$details['title'].': </strong>'.$display_value.' </li>';
-				
+
+				if( $details['type'] != 'html' ) {
+					$list .= '<li class="row-'. esc_attr( Wordpress_Creation_Kit::wck_generate_slug( $details['title'], $details ) ) .'" data-type="'. $details['type'] .'"><strong>'. $details['title'] . ( $details['type'] != 'heading' ? ':' : '' ) .' </strong>'. $display_value .' </li>';
+				}
+
 				$list = apply_filters( "wck_after_listed_{$meta}_element_{$j}", $list, $element_id, $value );
 				
 				$j++;	
@@ -714,6 +729,30 @@ class Wordpress_Creation_Kit{
 			wp_enqueue_script('jquery-ui-datepicker');		
 			wp_enqueue_style( 'jquery-style', plugins_url( '/assets/datepicker/datepicker.css', __FILE__ ) );
 		}
+
+		//colorpicker
+		if ( file_exists( WCK_PLUGIN_DIR. '/wordpress-creation-kit-api/fields/colorpicker.php' ) ){
+			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_style( 'wck-colorpicker-style', plugins_url( '/assets/colorpicker/colorpicker.css', __FILE__ ), false, '1.0' );
+			wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, 1 );
+			wp_enqueue_script( 'wp-color-picker', admin_url( 'js/color-picker.min.js' ), array( 'iris' ), false, 1 );
+		}
+
+		//phone
+		if ( file_exists( WCK_PLUGIN_DIR. '/wordpress-creation-kit-api/fields/phone.php' ) ){
+			wp_enqueue_script( 'wck-jquery-inputmask', plugins_url( '/assets/phone/jquery.inputmask.bundle.min.js', __FILE__ ), array( 'jquery' ), false, 1 );
+		}
+
+        //map
+        if ( file_exists( WCK_PLUGIN_DIR. '/wordpress-creation-kit-api/fields/map.php' ) ){
+            $options = get_option( 'wck_extra_options' );
+
+            if( !empty( $options[0]['google-maps-api'] ) ) {
+                wp_enqueue_script('wck-google-maps-api-script', 'https://maps.googleapis.com/maps/api/js?key=' . $options[0]['google-maps-api'] . '&libraries=places', array('jquery'));
+                wp_enqueue_script('wck-google-maps-script', plugin_dir_url(__FILE__) . '/assets/map/map.js', array('jquery'), false, 1);
+                wp_enqueue_style('wck-google-maps-style', plugin_dir_url(__FILE__) . '/assets/map/map.css');
+            }
+        }
 		
 		/* media upload */
 		wp_enqueue_media();
@@ -729,32 +768,32 @@ class Wordpress_Creation_Kit{
 		$required_fields = array();
 		$required_fields_with_errors = array();
 		$required_message = '';
-		
 		$errors = '';
-		
+
 		if( !empty( $fields ) ){
 			foreach( $fields as $field ){
-				if( !empty( $field['required'] ) && $field['required'] )
+				if( !empty( $field['required'] ) && $field['required'] ) {
 					$required_fields[Wordpress_Creation_Kit::wck_generate_slug( $field['title'], $field )] = $field['title'];
+				}
 			}
 		}
-		
-		if( !empty( $values ) ){
-			foreach( $values as $key => $value ){
-				if( array_key_exists( $key, $required_fields ) && apply_filters( "wck_required_test_{$meta}_{$key}", empty( $value ), $value, $id ) ){
-					$required_message .= apply_filters( "wck_required_message_{$meta}_{$key}", __( "Please enter a value for the required field ", "wck" ) . "$required_fields[$key] \n", $value );
+
+        if( !empty( $values ) ){
+			foreach( $required_fields as $key => $title ){
+                if( !array_key_exists( $key, $values ) || ( array_key_exists( $key, $values ) && apply_filters( "wck_required_test_{$meta}_{$key}", empty( $values[$key] ), $values[$key], $id, $key, $meta, $fields ) ) ) {
+					$required_message .= apply_filters( "wck_required_message_{$meta}_{$key}", __( "Please enter a value for the required field ", "wck" ) . "$required_fields[$key] \n", ( isset($values[$key]) ? $values[$key] : '' ), $required_fields[$key] );
 					$required_fields_with_errors[] = $key;
 				}
 			}
 		}
-		
+
 		$required_message .= apply_filters( "wck_extra_message", "", $fields, $required_fields, $meta, $values, $id );
 		$required_fields_with_errors = apply_filters( "wck_required_fields_with_errors", $required_fields_with_errors, $fields, $required_fields, $meta, $values, $id );
 
 		if( $required_message != '' ){			
 			$errors = array( 'error' => $required_message, 'errorfields' => $required_fields_with_errors );			
 		}
-		
+
 		return $errors;
 	}
 	

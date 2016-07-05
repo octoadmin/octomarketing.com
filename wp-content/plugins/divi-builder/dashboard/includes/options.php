@@ -18,6 +18,12 @@ $all_sections = array(
 			'main'   => esc_html__( 'Main', 'bloom' ),
 		),
 	),
+	'api'  => array(
+		'title'    => esc_html__( 'API Settings', 'et_builder_plugin' ),
+		'contents' => array(
+			'main'   => esc_html__( 'Main', 'bloom' ),
+		),
+	),
 );
 
 /**
@@ -162,6 +168,34 @@ $dashboard_options_all = array(
 		),
 	),
 
+	'google_api' => array(
+		'section_start' => array(
+			'type'     => 'section_start',
+			'title'    => esc_html__( 'Google API', 'et_builder' ),
+		),
+
+		'option' => array(
+			'type'                 => 'input_field',
+			'subtype'              => 'text',
+			'placeholder'          => '',
+			'title'                => esc_html__( 'Google API Key:', 'et_builder_plugin' ),
+			'name'                 => 'google_api_key',
+			'class'                => 'google_api_key',
+			'hide_contents'        => true,
+			'validation_type'      => 'simple_text',
+			'hide_contents'        => true,
+			'hint_text'            => et_get_safe_localization( sprintf( __( 'The Maps module uses the Google Maps API and requires a valid Google API Key to function. Before using the map module, please make sure you have added your API key here. Learn more about how to create your Google API Key <a target="_blank" href="%1$s">here</a>.', 'et_builder_plugin' ), 'http://www.elegantthemes.com/gallery/divi/documentation/map/#gmaps-api-key' ) ),
+		),
+
+		'update_button' => array(
+			'type'            => 'button',
+			'title'           => esc_html__( 'Save', 'et_builder_plugin' ),
+			'link'            => '#',
+			'authorize'       => false,
+			'class'           => 'et_google_api_save',
+		),
+	),
+
 	'newsletter_title' => array(
 		'type'  => 'main_title',
 		'title' => esc_html__( 'Newsletter Settings', 'et_builder_plugin' ),
@@ -170,6 +204,11 @@ $dashboard_options_all = array(
 	'updates_title' => array(
 		'type'  => 'main_title',
 		'title' => esc_html__( 'Authenticate Your Subscription', 'et_builder_plugin' ),
+	),
+
+	'api_title' => array(
+		'type'  => 'main_title',
+		'title' => esc_html__( 'Configure the API Settings', 'et_builder_plugin' ),
 	),
 
 	'end_of_section' => array(
@@ -210,6 +249,13 @@ $assigned_options = array(
 			$dashboard_options_all[ 'updates' ][ 'option_1' ],
 			$dashboard_options_all[ 'updates' ][ 'option_2' ],
 			$dashboard_options_all[ 'updates' ][ 'update_button' ],
+			$dashboard_options_all[ 'end_of_section' ],
+	),
+	'api_main_options' => array(
+		$dashboard_options_all[ 'api_title' ],
+		$dashboard_options_all[ 'google_api' ][ 'section_start' ],
+			$dashboard_options_all[ 'google_api' ][ 'option' ],
+			$dashboard_options_all[ 'google_api' ][ 'update_button' ],
 			$dashboard_options_all[ 'end_of_section' ],
 	),
 );

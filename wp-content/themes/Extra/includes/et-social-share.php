@@ -28,11 +28,17 @@ class ET_Social_Share {
 		$permalink = esc_url( $permalink );
 		$title = esc_attr( $title );
 		$title = rawurlencode( $title );
+		$featured_image_url = '';
 
-		if ( false !== strpos( $this->share_url, '%1$s' ) && false !== strpos( $this->share_url, '%2$s' ) ) {
-			$url = sprintf( $this->share_url, $permalink, $title );
-		} else if ( false !== strpos( $this->share_url, '%1$s' ) ) {
-			$url = sprintf( $this->share_url, $permalink );
+		// get the URL of featured image for Pinterest network
+		if ( 'pinterest' === $this->slug ) {
+			$featured_image_id = get_post_thumbnail_id();
+			$featured_image_url_array = wp_get_attachment_image_src( $featured_image_id );
+			$featured_image_url = $featured_image_url_array[0];
+		}
+
+		if ( false !== strpos( $this->share_url, '%1$s' ) ) {
+			$url = sprintf( $this->share_url, $permalink, $title, $featured_image_url );
 		} else {
 			return '#';
 		}
@@ -93,7 +99,7 @@ class ET_Pinterest_Social_Share extends ET_Social_Share {
 	function init() {
 		$this->name = esc_html__( 'Pinterest', 'extra' );
 		$this->slug = 'pinterest';
-		$this->share_url = 'http://www.pinterest.com/pin/create/button/?url=%1$s&description=%2$s';
+		$this->share_url = 'http://www.pinterest.com/pin/create/button/?url=%1$s&description=%2$s&media=%3$s';
 	}
 
 }

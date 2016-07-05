@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Monarch Plugin
  * Plugin URI: http://www.elegantthemes.com
- * Version: 1.3
+ * Version: 1.3.1
  * Description: Social Media Plugin
  * Author: Elegant Themes
  * Author URI: http://www.elegantthemes.com
@@ -17,7 +17,7 @@ define( 'ET_MONARCH_PLUGIN_DIR', trailingslashit( dirname(__FILE__) ) );
 define( 'ET_MONARCH_PLUGIN_URI', plugins_url('', __FILE__) );
 
 class ET_Monarch {
-	var $plugin_version = '1.3';
+	var $plugin_version = '1.3.1';
 	var $db_version = '1.2';
 	var $monarch_options;
 	var $_options_pagename = 'et_monarch_options';
@@ -2568,6 +2568,7 @@ class ET_Monarch {
 
 		if ( 'all' !== $networks ) {
 			$i = 0;
+			$need_closing_brace = false;
 
 			foreach ( $networks as $network ) {
 				//do not count likes
@@ -2575,11 +2576,12 @@ class ET_Monarch {
 					$operator   = 0 < $i ? ' OR ' : ' AND ( ';
 					$sql       .= "{$operator}network = %s";
 					$sql_args[] = $network;
+					$need_closing_brace = true; // need to close the brace in SQL string if we have at least one network excluding Like
 					$i++;
 				}
 			}
 
-			$sql .= ');';
+			$sql .= $need_closing_brace ? ');' : '';
 		}
 
 		$total_stats = $wpdb->get_var( $wpdb->prepare( $sql, $sql_args ) );
@@ -2980,7 +2982,7 @@ class ET_Monarch {
 			if ( '' !== $post_link ) {
 				$permalink = $post_link;
 			} else {
-				$permalink = ( class_exists( 'WooCommerce' ) && is_checkout() || is_front_page() ) ? get_bloginfo( 'url' ) : get_permalink();
+				$permalink = ( class_exists( 'WooCommerce' ) && is_checkout() || $this->is_homepage() ) ? get_bloginfo( 'url' ) : get_permalink();
 
 				if ( class_exists( 'BuddyPress' ) && is_buddypress() ) {
 					$permalink = bp_get_requested_url();
@@ -2992,7 +2994,7 @@ class ET_Monarch {
 			if ( '' !== $post_title ) {
 				$title = $post_title;
 			} else {
-				$title = class_exists( 'WooCommerce' ) && is_checkout() || is_front_page() ? get_bloginfo( 'name' ) : get_the_title();
+				$title = class_exists( 'WooCommerce' ) && is_checkout() || $this->is_homepage() ? get_bloginfo( 'name' ) : get_the_title();
 			}
 
 			$title = rawurlencode( wp_strip_all_tags( html_entity_decode( $title, ENT_QUOTES, 'UTF-8' ) ) );
@@ -3661,7 +3663,7 @@ class ET_Monarch {
 				$display_there = true;
 			}
 		} else {
-			if ( is_front_page() ) {
+			if ( $this->is_homepage() ) {
 				if ( ( in_array( 'home', $post_types ) && 'inline' !== $location ) || ( is_page() && in_array( 'home', $post_types ) && 'inline' == $location ) ) {
 					$display_there = true;
 				}
@@ -3776,7 +3778,7 @@ class ET_Monarch {
 			if ( '' !== $current_id ) {
 				$post_id = $current_id;
 			} else {
-				$post_id = is_front_page() && ! is_page() ? '-1' : get_the_ID();
+				$post_id = $this->is_homepage() && ! is_page() ? '-1' : get_the_ID();
 			}
 
 			foreach ( $current_networks as $icon ) {
@@ -3912,8 +3914,8 @@ class ET_Monarch {
 							</li>',
 							esc_attr( $type ),
 							esc_attr( $post_id ),
-							is_front_page() && ! is_page() ? esc_url( get_bloginfo( 'url' ) ) : esc_url( get_permalink( $post_id ) ),
-							is_front_page() && ! is_page() ? esc_attr( get_bloginfo( 'name' ) ) : esc_attr( get_the_title( $post_id ) )
+							$this->is_homepage() && ! is_page() ? esc_url( get_bloginfo( 'url' ) ) : esc_url( get_permalink( $post_id ) ),
+							$this->is_homepage() && ! is_page() ? esc_attr( get_bloginfo( 'name' ) ) : esc_attr( get_the_title( $post_id ) )
 						);
 						break;
 
@@ -3927,8 +3929,8 @@ class ET_Monarch {
 							</li>',
 							esc_attr( $type ),
 							esc_attr( $post_id ),
-							is_front_page() && ! is_page() ? esc_url( get_bloginfo( 'url' ) ) : esc_url( get_permalink( $post_id ) ),
-							is_front_page() && ! is_page() ? esc_attr( get_bloginfo( 'name' ) ) : esc_attr( get_the_title( $post_id ) ),
+							$this->is_homepage() && ! is_page() ? esc_url( get_bloginfo( 'url' ) ) : esc_url( get_permalink( $post_id ) ),
+							$this->is_homepage() && ! is_page() ? esc_attr( get_bloginfo( 'name' ) ) : esc_attr( get_the_title( $post_id ) ),
 							esc_url( $media_url )
 						);
 						break;
@@ -5022,6 +5024,14 @@ class ET_Monarch {
 		}
 
 		return $newurl;
+	}
+
+	/**
+	 * Check the homepage
+	 * @return bool
+	 */
+	function is_homepage() {
+		return is_front_page() || is_home();
 	}
 
 	function frontend_register_locations() {

@@ -168,8 +168,8 @@ function wck_ctc_create_taxonomy(){
 
 /* Taxonomy Name Verification */
 
-add_filter( 'wck_required_test_wck_ctc_taxonomy', 'wck_ctc_check_taxonomy', 10, 3 );
-function wck_ctc_check_taxonomy( $bool, $value, $post_id ){
+add_filter( 'wck_required_test_wck_ctc_taxonomy', 'wck_ctc_check_taxonomy', 10, 6 );
+function wck_ctc_check_taxonomy( $bool, $value, $post_id, $field, $meta, $fields ){
     //Make sure it doesn't contain capital letters or spaces
     $no_spaces_value = str_replace(' ', '', $value);
     $lowercase_value = strtolower($value);
@@ -183,8 +183,8 @@ function wck_ctc_check_taxonomy( $bool, $value, $post_id ){
 
 }
 
-add_filter( 'wck_required_message_wck_ctc_taxonomy', 'wck_ctc_change_taxonomy_message', 10, 2 );
-function wck_ctc_change_taxonomy_message( $message, $value ){
+add_filter( 'wck_required_message_wck_ctc_taxonomy', 'wck_ctc_change_taxonomy_message', 10, 3 );
+function wck_ctc_change_taxonomy_message( $message, $value, $required_field ){
     // change error message
     $no_spaces_value = str_replace(' ', '', $value);
     $lowercase_value = strtolower($value);

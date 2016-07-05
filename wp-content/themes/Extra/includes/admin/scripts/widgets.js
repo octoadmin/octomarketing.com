@@ -122,6 +122,10 @@
 								<input class="widefat" id="widget-et_ads-' + widget_number + '-[ads][' + ad_number + '][img_url]" name="widget-et_ads[' + widget_number + '][ads][' + ad_number + '][img_url]" type="text" value="">\
 							</p>\
 							<p class="field_wrap">\
+								<label for="widget-et_ads-' + widget_number + '-[ads][' + ad_number + '][img_alt_text]">' + EXTRA.label_img_alt_text + '</label>\
+								<input class="widefat" id="widget-et_ads-' + widget_number + '-[ads][' + ad_number + '][img_alt_text]" name="widget-et_ads[' + widget_number + '][ads][' + ad_number + '][img_alt_text]" type="text" value="">\
+							</p>\
+							<p class="field_wrap">\
 								<label for="widget-et_ads-' + widget_number + '-[ads][' + ad_number + '][link_url]">' + EXTRA.label_link_url + '</label>\
 								<input class="widefat" id="widget-et_ads-' + widget_number + '-[ads][' + ad_number + '][link_url]" name="widget-et_ads[' + widget_number + '][ads][' + ad_number + '][link_url]" type="text" value="">\
 							</p>\

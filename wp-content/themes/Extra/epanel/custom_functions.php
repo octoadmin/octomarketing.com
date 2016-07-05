@@ -193,6 +193,13 @@ if ( ! function_exists( 'truncate_post' ) ) {
 			// remove caption shortcode from the post content
 			$truncate = preg_replace( '@\[caption[^\]]*?\].*?\[\/caption]@si', '', $truncate );
 
+			// remove post nav shortcode from the post content
+			$truncate = preg_replace( '@\[et_pb_post_nav[^\]]*?\].*?\[\/et_pb_post_nav]@si', '', $truncate );
+
+			// Remove audio shortcode from post content to prevent unwanted audio file on the excerpt
+			// due to unparsed audio shortcode
+			$truncate = preg_replace( '@\[audio[^\]]*?\].*?\[\/audio]@si', '', $truncate );
+
 			// apply content filters
 			$truncate = apply_filters( 'the_content', $truncate );
 

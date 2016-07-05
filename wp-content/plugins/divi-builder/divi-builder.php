@@ -3,7 +3,7 @@
  * Plugin Name: Divi Builder
  * Plugin URI: http://elegantthemes.com
  * Description: A drag and drop page builder for any WordPress theme.
- * Version: 1.3.5
+ * Version: 1.3.8
  * Author: Elegant Themes
  * Author URI: http://elegantthemes.com
  * License: GPLv2 or later
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'ET_BUILDER_PLUGIN_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'ET_BUILDER_PLUGIN_URI', plugins_url('', __FILE__) );
-define( 'ET_BUILDER_PLUGIN_VERSION', '1.3.5' );
+define( 'ET_BUILDER_PLUGIN_VERSION', '1.3.8' );
 
 if ( ! class_exists( 'ET_Dashboard_v2' ) ) {
 	require_once( ET_BUILDER_PLUGIN_DIR . 'dashboard/dashboard.php' );
@@ -56,6 +56,8 @@ class ET_Builder_Plugin extends ET_Dashboard_v2 {
 		add_action( 'wp_ajax_et_builder_refresh_lists', array( $this, 'refresh_lists' ) );
 
 		add_action( 'wp_ajax_et_builder_save_updates_settings', array( $this, 'save_updates_settings' ) );
+
+		add_action( 'wp_ajax_et_builder_save_google_api_settings', array( $this, 'save_google_api_settings' ) );
 
 		add_filter( 'et_pb_builder_authorization_verdict', array( $this, 'is_aweber_authorized' ) );
 
@@ -162,12 +164,16 @@ class ET_Builder_Plugin extends ET_Dashboard_v2 {
 	 */
 	function get_builder_options() {
 		$auto_updates_settings = get_option( 'et_automatic_updates_options' ) ? get_option( 'et_automatic_updates_options' ) : array();
+		$google_api_settings = get_option( 'et_google_api_settings' ) ? get_option( 'et_google_api_settings' ) : array();
 		$builder_options = get_option( 'et_pb_builder_options' ) ? get_option( 'et_pb_builder_options' ) : array();
 		$processed_updates_settings = array();
 
 		// prepare array of Auto Updates settings
 		$processed_updates_settings['updates_main_updates_username'] = isset( $auto_updates_settings['username'] ) ? $auto_updates_settings['username'] : '';
 		$processed_updates_settings['updates_main_updates_api_key'] = isset( $auto_updates_settings['api_key'] ) ? $auto_updates_settings['api_key'] : '';
+
+		// prepare array of Google API settings
+		$processed_updates_settings['api_main_google_api_key'] = isset( $google_api_settings['api_key'] ) ? $google_api_settings['api_key'] : '';
 
 		$complete_options_set = array_merge( $builder_options, $processed_updates_settings );
 		return $complete_options_set;
@@ -389,6 +395,24 @@ class ET_Builder_Plugin extends ET_Dashboard_v2 {
 
 		update_option( 'et_automatic_updates_options', array(
 			'username' => $username,
+			'api_key' => $api_key,
+		) );
+
+		die();
+	}
+
+	function save_google_api_settings() {
+		if ( ! wp_verify_nonce( $_POST['et_builder_nonce'] , 'et_builder_nonce' ) ) {
+			die( -1 );
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			die( -1 );
+		}
+
+		$api_key = ! empty( $_POST['et_builder_google_api_key'] ) ? sanitize_text_field( $_POST['et_builder_google_api_key'] ) : '';
+
+		update_option( 'et_google_api_settings', array(
 			'api_key' => $api_key,
 		) );
 

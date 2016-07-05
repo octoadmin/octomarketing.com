@@ -74,11 +74,29 @@ class WCK_FrontEnd_Posting extends Wordpress_Creation_Kit{
 	 *
 	 * @since 1.0.0	
 	 */
-	static function wck_fep_register_script(){			
+	static function wck_fep_register_script(){
 		//datepicker
 		wp_enqueue_script('jquery-ui-datepicker');		
 		wp_enqueue_style('jquery-style', plugins_url( '', dirname(__FILE__) ).'/assets/datepicker/datepicker.css');
-		
+
+		//colorpicker
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'wck-colorpicker-style', plugins_url( '', dirname(__FILE__) ).'/assets/colorpicker/colorpicker.css', false, '1.0' );
+		wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, 1 );
+		wp_enqueue_script( 'wp-color-picker', admin_url( 'js/color-picker.min.js' ), array( 'iris' ), false, 1 );
+
+		//phone
+		wp_enqueue_script( 'wck-jquery-inputmask', plugins_url( '', dirname(__FILE__) ).'/assets/phone/jquery.inputmask.bundle.min.js', array( 'jquery' ), false, 1 );
+
+        // map
+        $options = get_option( 'wck_extra_options' );
+
+        if( !empty( $options[0]['google-maps-api'] ) ) {
+            wp_enqueue_script( 'wck-google-maps-api-script', 'https://maps.googleapis.com/maps/api/js?key=' . $options[0]['google-maps-api'] . '&libraries=places', array('jquery') );
+            wp_enqueue_script( 'wck-google-maps-script', plugin_dir_url( __FILE__ ) . '../assets/map/map.js', array('jquery') );
+            wp_enqueue_style( 'wck-google-maps-style', plugin_dir_url( __FILE__ ) . '../assets/map/map.css' );
+        }
+
 		/* FEP script */		
 		wp_register_script( 'wck-fep', plugins_url('wck-fep.js', __FILE__ ), array('jquery'), '1.0', true );
 		wp_register_style( 'wck-fep-css', plugins_url('wck-fep.css', __FILE__ ) );

@@ -177,7 +177,7 @@
 								'theme_location'            => 'primary-menu',
 								'container'                 => '',
 								'fallback_cb'               => '',
-								'menu_class'                => 'nav',
+								'menu_class'                => $menu_class,
 								'menu_id'                   => 'et-menu',
 								'echo'                      => false,
 								'walker'                    => new Extra_Walker_Nav_Menu,

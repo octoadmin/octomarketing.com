@@ -222,6 +222,12 @@ function extra_tax_layout() {
 	}
 }
 
+function is_extra_tax_layout() {
+	$is_extra_tax_layout = is_category() || is_tag();
+
+	return apply_filters( 'is_extra_tax_layout', $is_extra_tax_layout );
+}
+
 function _et_extra_get_tax_layout() {
 	global $wp_query;
 

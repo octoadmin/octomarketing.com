@@ -418,8 +418,8 @@ function wck_cptc_update_post_type( $meta, $id, $values, $element_id ){
 }
 
 /* Post Type Name Verification */
-add_filter( 'wck_required_test_wck_cptc_post-type', 'wck_cptc_check_post_type', 10, 3 );
-function wck_cptc_check_post_type( $bool, $value, $post_id ){
+add_filter( 'wck_required_test_wck_cptc_post-type', 'wck_cptc_check_post_type', 10, 6 );
+function wck_cptc_check_post_type( $bool, $value, $post_id, $field, $meta, $fields ){
     //Make sure it doesn't contain capital letters or spaces
     $no_spaces_value = str_replace(' ', '', $value);
     $no_hyphens_value = str_replace('-', '', $value);
@@ -433,8 +433,8 @@ function wck_cptc_check_post_type( $bool, $value, $post_id ){
     return ( empty($value) || $checked );
 }
 
-add_filter( 'wck_required_message_wck_cptc_post-type', 'wck_cptc_change_post_type_message', 10, 2 );
-function wck_cptc_change_post_type_message( $message, $value ){
+add_filter( 'wck_required_message_wck_cptc_post-type', 'wck_cptc_change_post_type_message', 10, 3 );
+function wck_cptc_change_post_type_message( $message, $value, $required_field ){
     // change error message
     $no_spaces_value = str_replace(' ', '', $value);
     $no_hyphens_value = str_replace('-', '', $value);

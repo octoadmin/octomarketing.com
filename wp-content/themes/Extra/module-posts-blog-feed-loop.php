@@ -23,8 +23,12 @@ while ( $module_posts->have_posts() ) : $module_posts->the_post();
 		if ( !in_array( $post_format, array( 'quote', 'link' ) ) ) {
 		?>
 		<div class="post-content">
-			<?php $color = extra_get_post_category_color(); ?>
-			<h2 class="post-title entry-title"><a class="et-accent-color" style="color:<?php echo esc_attr( $color ); ?>;" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<?php
+				$color = extra_get_post_category_color();
+
+				$et_permalink = get_the_permalink();
+			?>
+			<h2 class="post-title entry-title"><a class="et-accent-color" style="color:<?php echo esc_attr( $color ); ?>;" href="<?php echo esc_url( $et_permalink ); ?>"><?php the_title(); ?></a></h2>
 			<div class="post-meta vcard">
 				<?php
 				$meta_args = array(
@@ -63,7 +67,7 @@ while ( $module_posts->have_posts() ) : $module_posts->the_post();
 						}
 						?>
 
-						<a class="<?php echo esc_attr( $read_more_class ); ?>" data-icon="<?php echo esc_attr( $data_icon ); ?>" href="<?php the_permalink(); ?>"><?php esc_html_e( 'Read More', 'extra' ); ?></a>
+						<a class="<?php echo esc_attr( $read_more_class ); ?>" data-icon="<?php echo esc_attr( $data_icon ); ?>" href="<?php echo esc_url( $et_permalink ); ?>"><?php esc_html_e( 'Read More', 'extra' ); ?></a>
 					<?php }
 				} else {
 					echo extra_get_de_buildered_content();

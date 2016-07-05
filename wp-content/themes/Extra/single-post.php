@@ -130,13 +130,15 @@
 								</div>
 							</div>
 						</nav>
+						<?php
+						if ( extra_is_post_author_box() ) { ?>
 						<div class="et_extra_other_module author-box vcard">
 							<div class="author-box-header">
 								<h3><?php esc_html_e( 'About The Author', 'extra' ); ?></h3>
 							</div>
 							<div class="author-box-content clearfix">
-								<div class="author-box-avatar photo">
-									<?php echo get_avatar( get_the_author_meta( 'user_email' ), 170 ); ?>
+								<div class="author-box-avatar">
+									<?php echo get_avatar( get_the_author_meta( 'user_email' ), 170, 'mystery', esc_attr( get_the_author() ) ); ?>
 								</div>
 								<div class="author-box-description">
 									<h4><a class="author-link url fn" href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" rel="author" title="<?php printf( et_get_safe_localization( __( 'View all posts by %s', 'extra' ) ), get_the_author() ); ?>"><?php echo get_the_author(); ?></a></h4>
@@ -149,8 +151,12 @@
 								</div>
 							</div>
 						</div>
+						<?php } ?>
 
-						<?php if ( $related_posts = extra_get_post_related_posts() ) { ?>
+						<?php
+						$related_posts = extra_get_post_related_posts();
+
+						if ( $related_posts && extra_is_post_related_posts() ) {  ?>
 						<div class="et_extra_other_module related-posts">
 							<div class="related-posts-header">
 								<h3><?php esc_html_e( 'Related Posts', 'extra' ); ?></h3>

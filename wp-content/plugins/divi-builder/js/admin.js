@@ -104,6 +104,32 @@
 			return false;
 		});
 
+		$( '.et_google_api_save' ).click( function() {
+			var $this_button = $( this ),
+				$this_container = $this_button.closest( 'ul' ),
+				$this_spinner = $this_container.find( 'span.spinner' ),
+				api_key = $this_container.find( '.google_api_key' ).val();
+
+			$.ajax({
+				type: 'POST',
+				url: builder_settings.ajaxurl,
+				data: {
+					action : 'et_builder_save_google_api_settings',
+					et_builder_nonce : builder_settings.et_builder_nonce,
+					et_builder_google_api_key : api_key
+				},
+				beforeSend: function( data ) {
+					$this_spinner.addClass( 'et_dashboard_spinner_visible' );
+				},
+
+				success: function( data ) {
+					$this_spinner.removeClass( 'et_dashboard_spinner_visible' );
+				}
+			});
+
+			return false;
+		});
+
 		$( '#et_pb_save_plugin' ).click( function() {
 			var $loading_animation = $( '#et_pb_loading_animation' ),
 				$success_animation = $( '#et_pb_success_animation' ),

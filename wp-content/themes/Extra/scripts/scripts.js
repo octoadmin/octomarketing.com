@@ -346,7 +346,13 @@ window.et_pb_extra_load_event_fired = false;
 			this.$main_nav.css('transform', transform);
 		},
 		onMainNavHeightChanged: function () {
+			// In fixed header state, main_nav height calculation is inappropriate
+			if ( ET_App.Elements.$container.hasClass('et-fixed-header') ) {
+				return;
+			}
 			this.main_nav_height = this.$main_nav.height();
+
+			this.$main_nav_wrapper.height( this.main_nav_height );
 		},
 		reApplyHideNav: function () {
 			this.activateHideNav();
@@ -766,6 +772,14 @@ window.et_pb_extra_load_event_fired = false;
 				}
 			}
 
+			if ($('ul.et_disable_top_tier').length) {
+				$('ul.et_disable_top_tier > li > ul').prev('a').attr('href','#');
+
+				$('ul.et_disable_top_tier > li > ul').prev('a[href="#"]').click(function(e){
+					e.preventDefault();
+				});
+			}
+
 			et_duplicate_menu($('#et-navigation ul.nav'), $('#et-mobile-navigation nav'), 'et-extra-mobile-menu', 'et_extra_mobile_menu');
 
 			if ($('#top-header #et-info').length) {
@@ -1068,7 +1082,9 @@ window.et_pb_extra_load_event_fired = false;
 							show_comments = $this_paginated.data('show_comments'),
 							date_format = $this_paginated.data('date_format'),
 							content_length = $this_paginated.data('content_length'),
-							hover_overlay_icon = $this_paginated.data('hover_overlay_icon');
+							hover_overlay_icon = $this_paginated.data('hover_overlay_icon'),
+							use_tax_query = $this_paginated.data('use_tax_query'),
+							tax_query = ( 'undefined' === typeof( EXTRA_TAX_QUERY )  || 1 !== parseInt( use_tax_query ) ) ? [] : EXTRA_TAX_QUERY;
 
 						e.preventDefault();
 
@@ -1129,7 +1145,9 @@ window.et_pb_extra_load_event_fired = false;
 									show_comments: show_comments,
 									date_format: date_format,
 									content_length: content_length,
-									hover_overlay_icon: hover_overlay_icon
+									hover_overlay_icon: hover_overlay_icon,
+									use_tax_query: use_tax_query,
+									tax_query: tax_query
 								},
 								success: function (data) {
 
@@ -2496,7 +2514,7 @@ window.et_pb_extra_load_event_fired = false;
 		$(window).ready(function () {
 			if ($.fn.fitVids) {
 				$('#main-content').fitVids({
-					customSelector: "iframe[src^='http://www.hulu.com'], iframe[src^='http://www.dailymotion.com'], iframe[src^='http://www.funnyordie.com'], iframe[src^='https://embed-ssl.ted.com'], iframe[src^='http://embed.revision3.com'], iframe[src^='https://flickr.com'], iframe[src^='http://blip.tv'], iframe[src^='http://www.collegehumor.com']"
+					customSelector: "iframe[src^='http://www.hulu.com'], iframe[src^='http://www.dailymotion.com'], iframe[src^='http://www.funnyordie.com'], iframe[src^='https://embed-ssl.ted.com'], iframe[src^='http://embed.revision3.com'], iframe[src^='https://flickr.com'], iframe[src^='http://blip.tv'], iframe[src^='http://www.collegehumor.com'], iframe[src^='https://cloudup.com']"
 				});
 			}
 

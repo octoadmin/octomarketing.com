@@ -1,3 +1,110 @@
+version 1.3.9 ( updated 06-25-2016 )
+- Added Google Maps API setting ( Google no longer support keyless access )
+	* options_extra.php
+	* framework/functions.php
+	* includes/admin/admin.php
+	* includes/core.php
+	* includes/builder/framework.php
+	* includes/builder/functions.php
+	* includes/builder/main-modules.php
+	* includes/builder/scripts/builder.js
+	* includes/builder/styles/style.css
+
+version 1.3.8 ( updated 06-23-2016 )
+- Fixed the issue with posts not displaying in Category Layouts
+	* includes/modules.php
+- Blog Feed Module: Fixed the issue with Read more button, linking to a wrong post
+	* module-posts-blog-feed-loop.php
+- Fixed the issue with some custom hover styles not working for Buttons
+	* includes/builder/class-et-builder-element.php
+- Text Module: Removed excessive padding that was mistakenly added to the final paragraph
+	* style.css
+
+version 1.3.7 ( updated 06-21-2016 )
+- Fixed the issue with missing image when sharing post using the Pinterest
+	* includes/et-social-share.php
+- Blog Feed Page Template: Fixed the issue with blank posts, showing up in Masonry Layout
+	* includes/core.php
+	* page-template-blog-feed.php
+- Fixed the issue with All in One SEO plugin homepage settings
+	* functions.php
+	* includes/plugins-seo-support.php
+	* includes/plugins-woocommerce-support.php
+	* includes/plugins-seo-support.php
+- Customizer: Fixed secondary menu background color option
+- Customizer: Added body heading's font-size and line-height options
+- Fixed Dropdown Menu text color on mobile
+	* includes/customizer.php
+- Added Cloudup video support
+- Fixed incorrect height, applied to main navigation in some cases
+	* scripts/scripts.js
+- Added missing description tag in the <head> section
+- Added missing alt tag on pagination's loading image and gravatars
+	* includes/admin/admin.php
+	* includes/admin/scripts/widgets.js
+	* includes/modules.php
+	* includes/template-tags.php
+	* includes/widgets.php
+	* module-ads.php
+	* page-template-authors.php
+	* post-top-content.php
+	* single-post.php
+	* single-project.php
+	* single-project.php
+- Category Builder: Fixed the issue with Pretty URL search broken for custom taxonomies when Category Builder is used for category
+- Fixed the issue where tag page which uses category builder displays all posts instead of posts which use current page's tag
+	* includes/layouts.php
+	* includes/modules.php
+	* includes/template-tags.php
+	* index.php
+	* module-posts-blog-feed.php
+	* scripts/scripts.js
+- Mega Menu: Fixed the issue with incorrect URL, used in comments count links
+	* includes/template-tags.php
+- Added Author Box and Related Posts ePanel and posts options
+	* includes/admin/admin.php
+	* includes/template-tags.php
+	* options_extra.php
+	* single-post.php
+- Category Builder: Fixed the issue with Section/Row / Background image option
+	* includes/builder-integrations.php
+	* includes/builder/class-et-builder-element.php
+- Blog Module: Fixed the issue with default pagination not showing on a site
+	* includes/navigation.php
+- Fixed "Disable Top Tier Dropdown Menu Links" option in ePanel > Navigation > General Settings
+	* header.php
+	* scripts/scripts.js
+- Fixed the issue with missing image when sharing post using the Pinterest
+	* includes/et-social-share.php
+- Post Module: Added "Ignore Displayed Posts" option
+	* includes/modules.php
+- Post Title Module: Fixed the issue with "Advanced settings / Title Font Size" option
+- Blog Module: Fixed Header Font advanced setting
+- Shop Module: Fixed the issue with Custom product sorting
+- Contact Module: Changed email field requirement
+	* includes/builder/main-modules.php
+- Fixed the issue with Magnific Popup script on default galleries
+	* includes/builder/functions.php
+	* styles.css
+- Slider Module: Fixed the issue with Background Video, shown in Fullscreen on iOS devices
+	* includes/builder/scripts/frontend-builder-scripts.js
+- Button Module: Fixed Custom padding inside the module
+	* includes/builder/class-et-builder-element.php
+	* includes/builder/main-modules.php
+- Slider module: Fixed some issues with Advanced settings / Header Font Size option on mobile
+	* includes/builder/class-et-builder-element.php
+	* includes/builder/main-modules.php
+	* style.css
+- Text Module: Added header font options
+	* includes/builder/class-et-global-settings.php
+	* includes/builder/main-modules.php
+- Fixed different aspect ratio for embedded video on post content and post format's content
+	* includes/builder/functions.php
+- Fixed the issue with switching Categories and Archives widgets to dropdowns, padding in the theme was causing them to obscure the text
+- Category Builder: Fixed layout issues when setting site-wide gutters lower than default value
+- Fixed disappearing sidebar on browsers, not supporting flexbox
+	* style.css
+
 version 1.3.6 ( updated 05-16-2016 )
 - Fixed the issue with Page Builder styles, missing for non-admin users
 	* core/init.php

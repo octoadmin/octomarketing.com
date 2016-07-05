@@ -33,7 +33,7 @@
 										<div class="carousel-item-size"></div>
 									<?php foreach ( $attachments as $attachment_id => $attachment_src ) { ?>
 										<div class="gallery_image carousel-item">
-											<img src="<?php echo esc_attr( $attachment_src ); ?>" />
+											<img src="<?php echo esc_attr( $attachment_src ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
 										</div>
 									<?php } ?>
 									</div>
@@ -43,7 +43,7 @@
 							<div class="post-thumbnail">
 								<?php list($thumb_src, $thumb_width, $thumb_height) = wp_get_attachment_image_src( $thumbnail_id, 'extra-image-huge' ); ?>
 
-								<img src="<?php echo esc_attr( $thumb_src ); ?>" />
+								<img src="<?php echo esc_attr( $thumb_src ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" />
 							</div><!-- .post-thumbnail -->
 							<?php } ?>
 

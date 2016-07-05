@@ -746,3 +746,28 @@ function et_pb_generate_extra_checkbox() {
 
 // Add Extra checkbox into the Library New Layout modal
 add_filter( 'et_pb_new_layout_before_options', 'et_pb_generate_extra_checkbox' );
+
+/**
+ * Prefix main elements selectors on Extra layout
+ *
+ * @param string  CSS selector
+ * @param string  function name
+ * @return string modified CSS selector
+ */
+function extra_layout_selector_prefixer( $selector, $function_name ) {
+	// List of module slugs that need to be prefixed
+	$prefixed_modules = apply_filters( 'extra_layout_prefixed_selectors', array(
+		'et_pb_section',
+		'et_pb_row',
+		'et_pb_row_inner',
+		'et_pb_column',
+	));
+
+	// Prefixing selectors in Extra layout
+	if ( extra_layout_used() || ( is_et_pb_preview() && isset( $_GET['is_extra_layout'] ) ) && in_array( $function_name, $prefixed_modules ) ) {
+		$selector = ".et_extra_layout {$selector}";
+	}
+
+	return $selector;
+}
+add_filter( 'et_pb_set_style_selector', 'extra_layout_selector_prefixer', 10, 2 );

@@ -149,7 +149,9 @@ function wck_cfc_create_box(){
 	new Wordpress_Creation_Kit( $args );
 
 	/* set up field types */
-	$field_types = array( 'text', 'textarea', 'select', 'checkbox', 'radio', 'upload', 'wysiwyg editor', 'datepicker', 'country select', 'user select', 'cpt select' );
+
+	$field_types = array( 'heading', 'text', 'textarea', 'select', 'checkbox', 'radio', 'phone', 'upload', 'wysiwyg editor', 'datepicker', 'timepicker', 'colorpicker', 'country select', 'user select', 'cpt select', 'currency select', 'html', 'map' );
+
 	$field_types = apply_filters( 'wck_field_types', $field_types );
 
 	/* setup post types */
@@ -163,9 +165,19 @@ function wck_cfc_create_box(){
 		array( 'type' => 'select', 'title' => __( 'Required', 'wck' ), 'slug' => 'required', 'options' => array( 'false', 'true' ), 'default' => 'false', 'description' => __( 'Whether the field is required or not', 'wck' ) ),
 		array( 'type' => 'select', 'title' => __( 'CPT', 'wck' ), 'slug' => 'cpt', 'options' => $post_types, 'default' => 'post', 'description' => __( 'Select what custom post type should be used in the CPT Select.', 'wck' ) ),
 		array( 'type' => 'text', 'title' => __( 'Default Value', 'wck' ), 'slug' => 'default-value', 'description' => __( 'Default value of the field. For Checkboxes if there are multiple values separate them with a ",". For an Upload field input an attachment id.', 'wck' ) ),
-		array( 'type' => 'text', 'title' => __( 'Options', 'wck' ), 'slug' => 'options', 'description' => __( 'Options for field types "select", "checkbox" and "radio". For multiple options separate them with a ",". You can use the following structure if you want the label to be different from the value: %LabelOne%valueone,%LabelTwo%valuetwo,%LabelThree%valuethree', 'wck' ) ),
-		array( 'type' => 'checkbox', 'title' => __( 'Attach upload to post', 'wck' ), 'slug' => 'attach-upload-to-post', 'description' => __( 'Uploads will be attached to the post if this is checked', 'wck' ), 'options' => array( 'yes' ), 'default' => 'yes' )
-	) );
+		array( 'type' => 'textarea', 'title' => __( 'Default Text', 'wck' ), 'slug' => 'default-text', 'description' => __( 'Default text of the textarea.', 'wck' ) ),
+		array( 'type' => 'textarea', 'title' => __( 'HTML Content', 'wck' ), 'slug' => 'html-content', 'description' => __( 'Add your HTML (or text) content.', 'wck' ) ),
+		array( 'type' => 'text', 'title' => __( 'Options', 'wck' ), 'slug' => 'options', 'description' => __( 'Options for field types "select", "checkbox" and "radio". For multiple options separate them with a ",".', 'wck' ) ),
+		array( 'type' => 'text', 'title' => __( 'Labels', 'wck' ), 'slug' => 'labels', 'description' => __( 'Labels for field types "select", "checkbox" and "radio". For multiple options separate them with a ",".', 'wck' ) ),
+		array( 'type' => 'text', 'title' => __( 'Phone Format', 'wck' ), 'slug' => 'phone-format', 'default' => '(###) ###-####', 'description' => __( "You can use: # for numbers, parentheses ( ), - sign, + sign, dot . and spaces.", 'wck' ) .'<br>'.  __( "Eg. (###) ###-####", 'wck' ) .'<br>'. __( "Empty field won't check for correct phone number.", 'wck' ) ),
+		array( 'type' => 'checkbox', 'title' => __( 'Attach upload to post', 'wck' ), 'slug' => 'attach-upload-to-post', 'description' => __( 'Uploads will be attached to the post if this is checked', 'wck' ), 'options' => array( 'yes' ), 'default' => 'yes' ),
+		array( 'type' => 'text', 'title' => __( 'Number of rows', 'wck' ), 'slug' => 'number-of-rows', 'description' => __( 'Number of rows for the textarea', 'wck' ), 'default' => '5' ),
+        array( 'type' => 'select', 'title' => __( 'Readonly', 'wck' ), 'slug' => 'readonly', 'options' => array( 'false', 'true' ), 'default' => 'false', 'description' => __( 'Whether the textarea is readonly or not', 'wck' ) ),
+        array( 'type' => 'text', 'title' => __( 'Default Latitude', 'wck' ), 'slug' => 'map-default-latitude', 'description' => __( 'The latitude at which the map should be displayed when no pins are attached.', 'wck' ), 'default' => 0 ),
+        array( 'type' => 'text', 'title' => __( 'Default Longitude', 'wck' ), 'slug' => 'map-default-longitude', 'description' => __( 'The longitude at which the map should be displayed when no pins are attached.', 'wck' ), 'default' => 0 ),
+        array( 'type' => 'text', 'title' => __( 'Default Zoom', 'wck' ), 'slug' => 'map-default-zoom', 'description' => __( 'Add a number from 0 to 19. The higher the number the higher the zoom.', 'wck' ), 'default' => 15 ),
+        array( 'type' => 'text', 'title' => __( 'Map Height', 'wck' ), 'slug' => 'map-height', 'description' => __( 'The height of the map.', 'wck' ), 'default' => 350 )
+	));
 
 
 	/* set up the box arguments */
@@ -250,18 +262,63 @@ function wck_cfc_create_boxes_args(){
 						$fields_inner_array['cpt'] = $wck_cfc_field['cpt'];
 					if( isset( $wck_cfc_field['default-value'] ) )
 						$fields_inner_array['default'] = $wck_cfc_field['default-value'];
+                    if( isset( $wck_cfc_field['default-text'] ) && !empty( $wck_cfc_field['default-text'] ) )
+                        $fields_inner_array['default'] = $wck_cfc_field['default-text'];
 					if( !empty( $wck_cfc_field['options'] ) ){
-						$fields_inner_array['options'] = explode( ',', $wck_cfc_field['options'] );
+						$fields_inner_array['options'] = array_map( 'trim', explode( ',', $wck_cfc_field['options'] ) );
+
+                        if( !empty( $wck_cfc_field['labels'] ) ){
+                            $labels = array_map( 'trim', explode( ',', $wck_cfc_field['labels'] ) );
+                        }
 
 						if( !empty( $fields_inner_array['options'] ) ){
 							foreach( $fields_inner_array['options'] as  $key => $value ){
 								$fields_inner_array['options'][$key] = trim( $value );
+                                if( strpos( $value, '%' ) === false && !empty( $labels[$key] ) )
+                                    $fields_inner_array['options'][$key] = '%'.$labels[$key].'%'.$value;
 							}
 						}
 
 					}
 					if( !empty( $wck_cfc_field['attach-upload-to-post'] ) )
 						$fields_inner_array['attach_to_post'] = $wck_cfc_field['attach-upload-to-post'] == 'yes' ? true : false;
+
+                    if( !empty( $wck_cfc_field['number-of-rows'] ) )
+                        $fields_inner_array['number_of_rows'] = trim( $wck_cfc_field['number-of-rows'] );
+
+                    if( !empty( $wck_cfc_field['readonly'] ) )
+                        $fields_inner_array['readonly'] = $wck_cfc_field['readonly'] == 'true' ? true : false;
+
+					if( ! empty( $wck_cfc_field['phone-format'] ) ) {
+						$phone_format_description = __( 'Required phone number format: ', 'wck' ) . $wck_cfc_field['phone-format'];
+						$phone_format_description = apply_filters( 'wck_phone_format_description', $phone_format_description );
+						if( $wck_cfc_field['field-type'] === 'phone' ) {
+							$fields_inner_array['phone-format'] = $wck_cfc_field['phone-format'];
+							if( ! empty( $wck_cfc_field['description'] ) ) {
+								$fields_inner_array['description'] .= '<br>' . $phone_format_description;
+							} else {
+								$fields_inner_array['description'] = $phone_format_description;
+							}
+						}
+					}
+
+
+                    if( $wck_cfc_field['field-type'] === 'html' && isset( $wck_cfc_field['html-content'] ) ) {
+                        $fields_inner_array['html-content'] = $wck_cfc_field['html-content'];
+                    }
+
+
+                    if( isset( $wck_cfc_field['map-default-latitude'] ) )
+                        $fields_inner_array['map_default_latitude'] = trim( $wck_cfc_field['map-default-latitude'] );
+
+                    if( isset( $wck_cfc_field['map-default-longitude'] ) )
+                        $fields_inner_array['map_default_longitude'] = trim( $wck_cfc_field['map-default-longitude'] );
+
+                    if( !empty( $wck_cfc_field['map-default-zoom'] ) )
+                        $fields_inner_array['map_default_zoom'] = trim( $wck_cfc_field['map-default-zoom'] );
+
+                    if( !empty( $wck_cfc_field['map-height'] ) )
+                        $fields_inner_array['map_height'] = trim( $wck_cfc_field['map-height'] );
 
 					$fields_array[] = $fields_inner_array;
 				}
@@ -318,8 +375,8 @@ function wck_cfc_create_boxes(){
 }
 
 /* Meta Name Verification */
-add_filter( 'wck_required_test_wck_cfc_args_meta-name', 'wck_cfc_ceck_meta_name', 10, 3 );
-function wck_cfc_ceck_meta_name( $bool, $value, $post_id ){
+add_filter( 'wck_required_test_wck_cfc_args_meta-name', 'wck_cfc_ceck_meta_name', 10, 6 );
+function wck_cfc_ceck_meta_name( $bool, $value, $post_id, $field, $meta, $fields ){
 	global $wpdb;
 
 	$wck_cfc_args = get_post_meta( $post_id, 'wck_cfc_args', true );
@@ -355,8 +412,8 @@ function wck_cfc_ceck_meta_name( $bool, $value, $post_id ){
 	return ( $check_meta_existance || empty($value) || $contains_spaces || $restricted_name || $has_uppercase );
 }
 
-add_filter( 'wck_required_message_wck_cfc_args_meta-name', 'wck_cfc_change_meta_message', 10, 2 );
-function wck_cfc_change_meta_message( $message, $value ){
+add_filter( 'wck_required_message_wck_cfc_args_meta-name', 'wck_cfc_change_meta_message', 10, 3 );
+function wck_cfc_change_meta_message( $message, $value, $required_field ){
 	if( empty( $value ) )
 		return $message;
 	else if( strpos( $value, ' ' ) !== false )
@@ -371,8 +428,8 @@ function wck_cfc_change_meta_message( $message, $value ){
 
 
 /* Field Name Verification */
-add_filter( 'wck_required_test_wck_cfc_fields_field-title', 'wck_cfc_ceck_field_title', 10, 3 );
-function wck_cfc_ceck_field_title( $bool, $value, $post_id ){
+add_filter( 'wck_required_test_wck_cfc_fields_field-title', 'wck_cfc_ceck_field_title', 10, 6 );
+function wck_cfc_ceck_field_title( $bool, $value, $post_id, $field, $meta, $fields ){
 
 	if( trim( strtolower( $value ) ) !== 'content' && trim( strtolower( $value ) ) !== 'action' )
 		$restricted_name = false;
@@ -382,8 +439,8 @@ function wck_cfc_ceck_field_title( $bool, $value, $post_id ){
 	return ( empty($value) || $restricted_name );
 }
 
-add_filter( 'wck_required_message_wck_cfc_fields_field-title', 'wck_cfc_change_field_title_message', 10, 2 );
-function wck_cfc_change_field_title_message( $message, $value ){
+add_filter( 'wck_required_message_wck_cfc_fields_field-title', 'wck_cfc_change_field_title_message', 10, 3 );
+function wck_cfc_change_field_title_message( $message, $value, $required_field ){
 	if( empty( $value ) )
 		return $message;
 	else if( trim( strtolower( $value ) ) === 'content' || trim( strtolower( $value ) ) === 'action' )
@@ -645,23 +702,62 @@ add_filter( 'wck_field_types', 'wck_cfc_filter_field_types' );
 function wck_cfc_filter_field_types( $field_types ){
 	$wck_premium_update = WCK_PLUGIN_DIR.'/update/';
 	if ( !file_exists ($wck_premium_update . 'update-checker.php'))
-		$field_types = array( 'text', 'textarea', 'select', 'checkbox', 'radio', 'upload', 'wysiwyg editor' );
+		$field_types = array( 'text', 'textarea', 'select', 'checkbox', 'radio', 'upload', 'wysiwyg editor', 'heading', 'colorpicker', 'currency select', 'phone', 'timepicker', 'html' );
 
 	return $field_types;
 }
 
 /* Mark as required the 'Options' field for checkboxes, radios, selects .. */
 add_filter( 'wck_before_test_required', 'wck_cfc_make_options_required', 10, 4 );
-function wck_cfc_make_options_required( $meta_array, $meta, $values, $id ){
-    if( $meta == 'wck_cfc_fields' ){
-        if( $values['field-type'] == 'select' || $values['field-type'] == 'radio' || $values['field-type'] == 'checkbox' ){
-            foreach( $meta_array as $key => $field ){
-                if( $field['slug'] == 'options' ){
-                    $meta_array[$key]['required'] = true;
-                }
-            }
-        }
-    }
-    return $meta_array;
+function wck_cfc_make_options_required( $meta_array, $meta, $values, $id ) {
+	if( $meta == 'wck_cfc_fields' ) {
+		if( $values['field-type'] == 'select' || $values['field-type'] == 'radio' || $values['field-type'] == 'checkbox' ) {
+			foreach( $meta_array as $key => $field ) {
+				if( $field['slug'] == 'options' ) {
+					$meta_array[$key]['required'] = true;
+				}
+			}
+		}
+	}
+
+	foreach( $meta_array as $key => $field ) {
+		if( $field['type'] == 'phone' ) {
+			$meta_array[$key]['required'] ? $meta_array[$key]['was_required'] = true : $meta_array[$key]['was_required'] = false;
+			$meta_array[$key]['required'] = true;
+			add_filter( "wck_required_test_{$meta}_" . Wordpress_Creation_Kit::wck_generate_slug( $field['title'], $field ), 'wck_phone_field_error', 10, 6 );
+		}
+	}
+
+	return $meta_array;
 }
+
+function wck_phone_field_error( $bool, $value, $id, $field, $meta, $fields ) {
+	foreach( $fields as $key => $field_array ) {
+		$field_slug = Wordpress_Creation_Kit::wck_generate_slug( $field_array['title'], $field_array );
+		if( $field_slug == $field ) {
+			if( ! empty( $field_array['phone-format'] ) && ! empty( $value ) ) {
+				$phone_nb = array();
+				$length = strlen( $value );
+
+				for( $i=0; $i < $length; $i++ ) {
+					$phone_nb[$i] = $value[$i];
+
+					if( $value[$i] == '_' ) {
+						add_filter( "wck_required_message_{$meta}_{$field}", "wck_phone_error_message", 10, 3 );
+						return true;
+					}
+				}
+			} elseif( isset( $field_array['was_required'] ) && $field_array['was_required'] && empty( $value ) ) {
+				return true;
+			}
+		}
+	}
+}
+
+function wck_phone_error_message( $message, $value, $required_field ) {
+	$message = apply_filters( "wck_invalid_phone_message", __( "Please enter a valid phone number for field ", "wck" ) . "$required_field \n" );
+
+	return $message;
+}
+
 ?>

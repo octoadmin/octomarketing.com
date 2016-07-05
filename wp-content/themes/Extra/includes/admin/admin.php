@@ -620,6 +620,23 @@ class Extra_Map_Post_Format_Meta_Box extends Extra_Post_Format_Meta_Box {
 		$lng = $this->fields[ '_map_format_lng' ];
 		$zoom = $this->fields[ '_map_format_zoom' ];
 
+		// Display Google API Key Notice
+		printf(
+			'<div class="form-field">
+				<p><strong>%1$s</strong></p>
+				<p>%2$s</p>
+				%3$s
+				<a href="%4$s" target="_blank" class="button extra_google_api_key_button">%5$s</a>
+			</div>',
+			esc_html__( 'Google API Key', 'extra' ),
+			et_get_safe_localization( sprintf( __( 'The Map feature uses the Google Maps API and requires a valid Google API Key to function. Before using the map feature, please make sure you have added your API key inside the Extra Theme Options panel. Learn more about how to create your Google API Key <a href="%1$s" target="_blank">here</a>.', 'extra' ), esc_url( 'http://www.elegantthemes.com/gallery/divi/documentation/map/#gmaps-api-key' ) ) ),
+			'' !== et_pb_get_google_api_key()
+				? sprintf( '<input type="text" id="extra_google_api_key" readonly value="%1$s" />', esc_attr( et_pb_get_google_api_key() ) )
+				: '',
+			esc_url( admin_url( 'admin.php?page=et_extra_options' ) ),
+			'' === et_pb_get_google_api_key() ? esc_html__( 'Add API Key', 'extra' ) : esc_html__( 'Change Your API Key', 'extra' )
+		);
+
 		echo '<div class="form-field">';
 
 		printf( '<p><strong>%s</strong></p>',
@@ -1205,6 +1222,25 @@ class Extra_Contact_Page_Template_Meta_Box extends Extra_Page_Template_Meta_Box 
 			<p><strong><?php esc_html_e( 'Contact Form Map', 'extra' ); ?></strong></p>
 		</div>
 
+		<?php
+			// Display Google API Key Notice
+			printf(
+				'<div class="form-field">
+					<p>%1$s</p>
+					<p>%2$s</p>
+					%3$s
+					<a href="%4$s" target="_blank" class="button extra_google_api_key_button">%5$s</a>
+				</div>',
+				esc_html__( 'Google API Key', 'extra' ),
+				et_get_safe_localization( sprintf( __( 'The Map feature uses the Google Maps API and requires a valid Google API Key to function. Before using the map feature, please make sure you have added your API key inside the Extra Theme Options panel. Learn more about how to create your Google API Key <a href="%1$s" target="_blank">here</a>.', 'extra' ), esc_url( 'http://www.elegantthemes.com/gallery/divi/documentation/map/#gmaps-api-key' ) ) ),
+				'' !== et_pb_get_google_api_key()
+					? sprintf( '<input type="text" id="extra_google_api_key" readonly value="%1$s" />', esc_attr( et_pb_get_google_api_key() ) )
+					: '',
+				esc_url( admin_url( 'admin.php?page=et_extra_options' ) ),
+				'' === et_pb_get_google_api_key() ? esc_html__( 'Add API Key', 'extra' ) : esc_html__( 'Change Your API Key', 'extra' )
+			);
+		?>
+
 		<div class="form-field">
 			<p><?php esc_html_e( 'Map Pin Address', 'extra' ); ?></p>
 			<input type="text" name="_contact_form_map_address" id="contact_form_map_address" value="<?php echo esc_attr( $this->fields['_contact_form_map_address']['value'] ); ?>">
@@ -1532,6 +1568,29 @@ class Extra_Page_Post_Settings_Meta_Box extends ET_Meta_Box {
 			$this->fields['_extra_featured_post'] = array(
 				'title' => esc_html__( 'Featured Post', 'extra' ),
 			);
+
+			// Display Author Box field depending on ePanel value.
+			if ( 'on' == et_get_option( 'extra_show_author_box', 'on' ) ) {
+				$this->fields['_extra_hide_author_box'] = array(
+					'title' => esc_html__( 'Hide Author Box', 'extra' ),
+				);
+			} else {
+				$this->fields['_extra_show_author_box'] = array(
+					'title' => esc_html__( 'Show Author Box', 'extra' ),
+				);
+			}
+
+			// Display Related Posts field depending on ePanel value.
+			if ( 'on' == et_get_option( 'extra_show_related_posts', 'on' ) ) {
+				$this->fields['_extra_hide_related_posts'] = array(
+					'title' => esc_html__( 'Hide Related Posts', 'extra' ),
+				);
+			} else {
+				$this->fields['_extra_show_related_posts'] = array(
+					'title' => esc_html__( 'Show Related Posts', 'extra' ),
+				);
+			}
+
 		}
 
 		if ( extra_check_feature_availability_in_post_type( $post->post_type, 'hide_title_meta_in_single' ) ) {
@@ -1604,8 +1663,39 @@ class Extra_Page_Post_Settings_Meta_Box extends ET_Meta_Box {
 			</label>
 		</div>
 		<br />
-		<?php
-		}
+		<?php if ( 'on' == et_get_option( 'extra_show_author_box', 'on' ) ) { ?>
+			<div class="form-field">
+				<label>
+					<input type="checkbox" name="_extra_hide_author_box" value="1" <?php checked( $this->fields['_extra_hide_author_box']['value'], '1' ); ?> />
+					<?php echo esc_html( $this->fields['_extra_hide_author_box']['title'] ); ?>
+				</label>
+			</div>
+		<?php } else { ?>
+			<div class="form-field">
+				<label>
+					<input type="checkbox" name="_extra_show_author_box" value="1" <?php checked( $this->fields['_extra_show_author_box']['value'], '1' ); ?> />
+					<?php echo esc_html( $this->fields['_extra_show_author_box']['title'] ); ?>
+				</label>
+			</div>
+		<?php } ?>
+		<br />
+		<?php if ( 'on' == et_get_option( 'extra_show_related_posts', 'on' ) ) { ?>
+			<div class="form-field">
+				<label>
+					<input type="checkbox" name="_extra_hide_related_posts" value="1" <?php checked( $this->fields['_extra_hide_related_posts']['value'], '1' ); ?> />
+					<?php echo esc_html( $this->fields['_extra_hide_related_posts']['title'] ); ?>
+				</label>
+			</div>
+		<?php } else { ?>
+			<div class="form-field">
+				<label>
+					<input type="checkbox" name="_extra_show_related_posts" value="1" <?php checked( $this->fields['_extra_show_related_posts']['value'], '1' ); ?> />
+					<?php echo esc_html( $this->fields['_extra_show_related_posts']['title'] ); ?>
+				</label>
+			</div>
+		<?php } ?>
+		<br />
+		<?php }
 
 		if ( extra_check_feature_availability_in_post_type( $post->post_type, 'hide_title_meta_in_single' ) ) {
 			$hide_title_meta_single = $this->fields['_post_extra_title_meta_hide_single'];
@@ -1698,6 +1788,7 @@ function extra_admin_scripts( $hook ) {
 		wp_enqueue_style( 'extra_widgets_css', $template_dir . '/includes/admin/styles/widgets.css', array(), $theme_version );
 		wp_localize_script( 'extra_widgets_js', 'EXTRA', array(
 			'label_img_url'   => esc_html__( 'Image Url:', 'extra' ),
+			'label_img_alt_text' => esc_html__( 'Image Alt Text:', 'extra' ),
 			'label_link_url'  => esc_html__( 'Link Url:', 'extra' ),
 			'label_ad_html'   => esc_html__( 'Ad HTML:', 'extra' ),
 			'label_new_line'  => esc_html__( 'Start on New Line', 'extra' ),

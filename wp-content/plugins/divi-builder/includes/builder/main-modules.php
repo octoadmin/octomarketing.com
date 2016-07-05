@@ -1386,6 +1386,12 @@ class ET_Builder_Module_Text extends ET_Builder_Module {
 		$this->main_css_element = '%%order_class%%';
 		$this->advanced_options = array(
 			'fonts' => array(
+				'header'   => array(
+					'label'    => esc_html__( 'Header', 'et_builder' ),
+					'css'      => array(
+						'main' => "{$this->main_css_element} h1",
+					),
+				),
 				'text'   => array(
 					'label'    => esc_html__( 'Text', 'et_builder' ),
 					'css'      => array(
@@ -2348,6 +2354,8 @@ class ET_Builder_Module_Slider extends ET_Builder_Module {
 					'label'    => esc_html__( 'Header', 'et_builder' ),
 					'css'      => array(
 						'main' => "{$this->main_css_element} .et_pb_slide_description .et_pb_slide_title",
+						'font_size_tablet' => "{$this->main_css_element} .et_pb_slides .et_pb_slide_description .et_pb_slide_title",
+						'font_size_phone'  => "{$this->main_css_element} .et_pb_slides .et_pb_slide_description .et_pb_slide_title",
 					),
 				),
 				'body'   => array(
@@ -2355,6 +2363,8 @@ class ET_Builder_Module_Slider extends ET_Builder_Module {
 					'css'      => array(
 						'line_height' => "{$this->main_css_element}",
 						'main' => "{$this->main_css_element} .et_pb_slide_content",
+						'font_size_tablet' => "{$this->main_css_element} .et_pb_slides .et_pb_slide_content",
+						'font_size_phone' => "{$this->main_css_element} .et_pb_slides .et_pb_slide_content",
 					),
 				),
 			),
@@ -2375,7 +2385,8 @@ class ET_Builder_Module_Slider extends ET_Builder_Module {
 			),
 			'slide_button' => array(
 				'label'    => esc_html__( 'Slide Button', 'et_builder' ),
-				'selector' => 'a.et_pb_more_button',
+				'selector' => '.et_pb_slider .et_pb_slide .et_pb_slide_description a.et_pb_more_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 			'slide_controllers' => array(
 				'label'    => esc_html__( 'Slide Controllers', 'et_builder' ),
@@ -2851,7 +2862,8 @@ class ET_Builder_Module_Slider_Item extends ET_Builder_Module {
 			),
 			'slide_button' => array(
 				'label'    => esc_html__( 'Slide Button', 'et_builder' ),
-				'selector' => 'a.et_pb_more_button',
+				'selector' => '.et_pb_slide .et_pb_container a.et_pb_more_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 			'slide_image' => array(
 				'label'    => esc_html__( 'Slide Image', 'et_builder' ),
@@ -3305,6 +3317,18 @@ class ET_Builder_Module_Slider_Item extends ET_Builder_Module {
 					esc_html( $background_size )
 				),
 			) );
+
+			if ( 'initial' === $background_size ) {
+				ET_Builder_Module::set_style( $function_name, array(
+					'selector'    => 'body.ie %%order_class%%.et_pb_slide',
+					'declaration' => sprintf(
+						'-moz-background-size: %1$s;
+						-webkit-background-size: %1$s;
+						background-size: %1$s;',
+						'auto'
+					),
+				) );
+			}
 		}
 
 		$class = ET_Builder_Element::add_module_order_class( $class, $function_name );
@@ -3476,7 +3500,8 @@ class ET_Builder_Module_Post_Slider extends ET_Builder_Module {
 			),
 			'slide_button' => array(
 				'label'    => esc_html__( 'Slide Button', 'et_builder' ),
-				'selector' => 'a.et_pb_more_button',
+				'selector' => '.et_pb_slider a.et_pb_more_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 			'slide_controllers' => array(
 				'label'    => esc_html__( 'Slide Controllers', 'et_builder' ),
@@ -4016,6 +4041,18 @@ class ET_Builder_Module_Post_Slider extends ET_Builder_Module {
 					esc_html( $background_size )
 				),
 			) );
+
+			if ( 'initial' === $background_size ) {
+				ET_Builder_Module::set_style( $function_name, array(
+					'selector'    => 'body.ie %%order_class%% .et_pb_slide',
+					'declaration' => sprintf(
+						'-moz-background-size: %1$s;
+						-webkit-background-size: %1$s;
+						background-size: %1$s;',
+						'auto'
+					),
+				) );
+			}
 		}
 
 		if ( '' !== $background_color ) {
@@ -5496,7 +5533,8 @@ class ET_Builder_Module_CTA extends ET_Builder_Module {
 			),
 			'promo_button' => array(
 				'label'    => esc_html__( 'Promo Button', 'et_builder' ),
-				'selector' => '.et_pb_promo_button',
+				'selector' => '.et_pb_promo .et_pb_button.et_pb_promo_button',
+				'no_space_before_selector' => true,
 			),
 			'promo_title' => array(
 				'label'    => esc_html__( 'Promo Title', 'et_builder' ),
@@ -5725,6 +5763,15 @@ class ET_Builder_Module_Button extends ET_Builder_Module {
 		);
 
 		$this->main_css_element = '%%order_class%%';
+
+		$this->custom_css_options = array(
+			'main_element' => array(
+				'label'    => esc_html__( 'Main Element', 'et_builder' ),
+				'selector' => '.et_pb_button.et_pb_module',
+				'no_space_before_selector' => true,
+			)
+		);
+
 		$this->advanced_options = array(
 			'button' => array(
 				'button' => array(
@@ -6203,7 +6250,8 @@ class ET_Builder_Module_Signup extends ET_Builder_Module {
 			),
 			'newsletter_button' => array(
 				'label'    => esc_html__( 'Newsletter Button', 'et_builder' ),
-				'selector' => '.et_pb_newsletter_button',
+				'selector' => '.et_pb_subscribe .et_pb_newsletter_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 		);
 	}
@@ -6697,7 +6745,8 @@ class ET_Builder_Module_Login extends ET_Builder_Module {
 			),
 			'newsletter_button' => array(
 				'label'    => esc_html__( 'Login Button', 'et_builder' ),
-				'selector' => '.et_pb_newsletter_button',
+				'selector' => '.et_pb_login .et_pb_login_form .et_pb_newsletter_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 		);
 	}
@@ -6921,8 +6970,7 @@ class ET_Builder_Module_Login extends ET_Builder_Module {
 			: '';
 
 		if ( is_user_logged_in() ) {
-			global $current_user;
-			get_currentuserinfo();
+			$current_user = wp_get_current_user();
 
 			$content .= sprintf( '<br/>%1$s <a href="%2$s">%3$s</a>',
 				sprintf( esc_html__( 'Logged in as %1$s', 'et_builder' ), esc_html( $current_user->display_name ) ),
@@ -9263,7 +9311,8 @@ class ET_Builder_Module_Contact_Form extends ET_Builder_Module {
 			),
 			'contact_button' => array(
 				'label'    => esc_html__( 'Contact Button', 'et_builder' ),
-				'selector' => '.et_pb_contact_submit',
+				'selector' => '.et_pb_contact_form_container .et_contact_bottom_container .et_pb_contact_submit.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 			'contact_fields' => array(
 				'label'    => esc_html__( 'Form Fields', 'et_builder' ),
@@ -9484,7 +9533,7 @@ class ET_Builder_Module_Contact_Form extends ET_Builder_Module {
 						}
 
 						// additional check for email field
-						if ( 'email' === $value['field_type'] && ! empty( $_POST[ $value['field_id'] ] ) ) {
+						if ( 'email' === $value['field_type'] && 'required' === $value['required_mark'] && ! empty( $_POST[ $value['field_id'] ] ) ) {
 							$contact_email = sanitize_email( $_POST[ $value['field_id'] ] );
 							if ( ! is_email( $contact_email ) ) {
 								$et_error_message .= sprintf( '<p class="et_pb_contact_error_text">%1$s</p>', esc_html__( 'Invalid Email.', 'et_builder' ) );
@@ -10174,13 +10223,13 @@ class ET_Builder_Module_Divider extends ET_Builder_Module {
 				esc_attr( $color )
 			);
 
-			if ( $this->defaults['divider_style'] !== $divider_style ) {
+			if ( '' !== $divider_style && $this->defaults['divider_style'] !== $divider_style ) {
 				$style .= sprintf( ' border-top-style: %s;',
 					esc_attr( $divider_style )
 				);
 			}
 
-			if ( $this->defaults['divider_weight'] !== $divider_weight ) {
+			if ( '' !== $divider_weight && $this->defaults['divider_weight'] !== $divider_weight ) {
 				$style .= sprintf( ' border-top-width: %1$spx;',
 					esc_attr( $divider_weight )
 				);
@@ -10215,7 +10264,7 @@ class ET_Builder_Module_Divider extends ET_Builder_Module {
 		}
 
 		$output = sprintf(
-			'<hr%2$s class="et_pb_module et_pb_space%1$s%3$s" />',
+			'<div%2$s class="et_pb_module et_pb_space%1$s%3$s"></div>',
 			( 'on' === $show_divider ? ' et_pb_divider' : '' ),
 			( '' !== $module_id ? sprintf( ' id="%1$s"', esc_attr( $module_id ) ) : '' ),
 			( '' !== $module_class ? sprintf( ' %1$s', esc_attr( ltrim( $module_class ) ) ) : '' )
@@ -10597,7 +10646,7 @@ class ET_Builder_Module_Blog extends ET_Builder_Module {
 				'header' => array(
 					'label'    => esc_html__( 'Header', 'et_builder' ),
 					'css'      => array(
-						'main' => "{$this->main_css_element} h2",
+						'main' => "{$this->main_css_element} .entry-title",
 						'important' => 'all',
 					),
 				),
@@ -10610,6 +10659,7 @@ class ET_Builder_Module_Blog extends ET_Builder_Module {
 				'body'   => array(
 					'label'    => esc_html__( 'Body', 'et_builder' ),
 					'css'      => array(
+						'color'        => "{$this->main_css_element}, {$this->main_css_element} .post-content *",
 						'line_height' => "{$this->main_css_element} p",
 					),
 				),
@@ -10619,7 +10669,7 @@ class ET_Builder_Module_Blog extends ET_Builder_Module {
 		$this->custom_css_options = array(
 			'title' => array(
 				'label'    => esc_html__( 'Title', 'et_builder' ),
-				'selector' => '.et_pb_post h2',
+				'selector' => '.et_pb_post .entry-title',
 			),
 			'post_meta' => array(
 				'label'    => esc_html__( 'Post Meta', 'et_builder' ),
@@ -11096,6 +11146,8 @@ class ET_Builder_Module_Blog extends ET_Builder_Module {
 						);
 					}
 
+					echo '<div class="post-content">';
+
 					$post_content = get_the_content();
 
 					// do not display the content if it contains Blog, Post Slider, Fullwidth Post Slider, or Portfolio modules to avoid infinite loops
@@ -11115,7 +11167,7 @@ class ET_Builder_Module_Blog extends ET_Builder_Module {
 							if ( has_excerpt() ) {
 								the_excerpt();
 							} else {
-								truncate_post( 270 );
+								echo wpautop( truncate_post( 270, false ) );
 							}
 						}
 					} else if ( has_excerpt() ) {
@@ -11126,6 +11178,8 @@ class ET_Builder_Module_Blog extends ET_Builder_Module {
 						$more = 'on' == $show_more ? sprintf( ' <a href="%1$s" class="more-link" >%2$s</a>' , esc_url( get_permalink() ), esc_html__( 'read more', 'et_builder' ) )  : '';
 						echo $more;
 					}
+
+					echo '</div>';
 					?>
 			<?php } // 'off' === $fullwidth || ! in_array( $post_format, array( 'link', 'audio', 'quote', 'gallery' ?>
 
@@ -11466,7 +11520,7 @@ class ET_Builder_Module_Shop extends ET_Builder_Module {
 		 * Hence customize WooCommerce' product query via modify_woocommerce_shortcode_products_query method
 		 * @see http://docs.woothemes.com/document/woocommerce-shortcodes/#section-5
 		 */
-		$modify_woocommerce_query = in_array( $orderby, array( 'price', 'price-desc', 'rating', 'popularity' ) );
+		$modify_woocommerce_query = in_array( $orderby, array( 'menu_order', 'price', 'price-desc', 'rating', 'popularity' ) );
 
 		if ( $modify_woocommerce_query ) {
 			add_filter( 'woocommerce_shortcode_products_query', array( $this, 'modify_woocommerce_shortcode_products_query' ), 10, 2 );
@@ -11785,6 +11839,7 @@ class ET_Builder_Module_Map extends ET_Builder_Module {
 			'address_lng',
 			'map_center_map',
 			'mouse_wheel',
+			'mobile_dragging',
 			'admin_label',
 			'module_id',
 			'module_class',
@@ -11795,12 +11850,27 @@ class ET_Builder_Module_Map extends ET_Builder_Module {
 		$this->fields_defaults = array(
 			'zoom_level'           => array( '18', 'only_default_setting' ),
 			'mouse_wheel'          => array( 'on' ),
+			'mobile_dragging'      => array( 'on' ),
 			'use_grayscale_filter' => array( 'off' ),
 		);
 	}
 
 	function get_fields() {
 		$fields = array(
+			'google_api_key' => array(
+				'label'             => esc_html__( 'Google API Key', 'et_builder' ),
+				'type'              => 'text',
+				'option_category'   => 'basic_option',
+				'attributes'        => 'readonly',
+				'additional_button' => sprintf(
+					' <a href="%2$s" target="_blank" class="et_pb_update_google_key button" data-empty_text="%3$s">%1$s</a>',
+					esc_html__( 'Change API Key', 'et_builder' ),
+					esc_url( et_pb_get_options_page_link() ),
+					esc_attr__( 'Add Your API Key', 'et_builder' )
+				),
+				'class' => array( 'et_pb_google_api_key', 'et-pb-helper-field' ),
+				'description'       => et_get_safe_localization( sprintf( __( 'The Maps module uses the Google Maps API and requires a valid Google API Key to function. Before using the map module, please make sure you have added your API key inside the Divi Theme Options panel. Learn more about how to create your Google API Key <a href="%1$s" target="_blank">here</a>.', 'et_builder' ), esc_url( 'http://www.elegantthemes.com/gallery/divi/documentation/map/#gmaps-api-key' ) ) ),
+			),
 			'address' => array(
 				'label'             => esc_html__( 'Map Center Address', 'et_builder' ),
 				'type'              => 'text',
@@ -11838,6 +11908,16 @@ class ET_Builder_Module_Map extends ET_Builder_Module {
 					'off' => esc_html__( 'Off', 'et_builder' ),
 				),
 				'description' => esc_html__( 'Here you can choose whether the zoom level will be controlled by mouse wheel or not.', 'et_builder' ),
+			),
+			'mobile_dragging' => array(
+				'label'           => esc_html__( 'Draggable on Mobile', 'et_builder' ),
+				'type'            => 'yes_no_button',
+				'option_category' => 'configuration',
+				'options'         => array(
+					'on'  => esc_html__( 'On', 'et_builder' ),
+					'off' => esc_html__( 'Off', 'et_builder' ),
+				),
+				'description' => esc_html__( 'Here you can choose whether or not the map will be draggable on mobile devices.', 'et_builder' ),
 			),
 			'use_grayscale_filter' => array(
 				'label'           => esc_html__( 'Use Grayscale Filter', 'et_builder' ),
@@ -11900,6 +11980,7 @@ class ET_Builder_Module_Map extends ET_Builder_Module {
 		$address_lng             = $this->shortcode_atts['address_lng'];
 		$zoom_level              = $this->shortcode_atts['zoom_level'];
 		$mouse_wheel             = $this->shortcode_atts['mouse_wheel'];
+		$mobile_dragging         = $this->shortcode_atts['mobile_dragging'];
 		$use_grayscale_filter    = $this->shortcode_atts['use_grayscale_filter'];
 		$grayscale_filter_amount = $this->shortcode_atts['grayscale_filter_amount'];
 
@@ -11916,7 +11997,7 @@ class ET_Builder_Module_Map extends ET_Builder_Module {
 
 		$output = sprintf(
 			'<div%5$s class="et_pb_module et_pb_map_container%6$s"%8$s>
-				<div class="et_pb_map" data-center-lat="%1$s" data-center-lng="%2$s" data-zoom="%3$d" data-mouse-wheel="%7$s"></div>
+				<div class="et_pb_map" data-center-lat="%1$s" data-center-lng="%2$s" data-zoom="%3$d" data-mouse-wheel="%7$s" data-mobile-dragging="%9$s"></div>
 				%4$s
 			</div>',
 			esc_attr( $address_lat ),
@@ -11926,7 +12007,8 @@ class ET_Builder_Module_Map extends ET_Builder_Module {
 			( '' !== $module_id ? sprintf( ' id="%1$s"', esc_attr( $module_id ) ) : '' ),
 			( '' !== $module_class ? sprintf( ' %1$s', esc_attr( $module_class ) ) : '' ),
 			esc_attr( $mouse_wheel ),
-			$grayscale_filter_data
+			$grayscale_filter_data,
+			esc_attr( $mobile_dragging )
 		);
 
 		return $output;
@@ -12465,7 +12547,7 @@ class ET_Builder_Module_Post_Title extends ET_Builder_Module {
 					'label'    => esc_html__( 'Title', 'et_builder' ),
 					'use_all_caps' => true,
 					'css'      => array(
-						'main' => "{$this->main_css_element} .et_pb_title_container h1",
+						'main' => "{$this->main_css_element} .et_pb_title_container h1.entry-title",
 					),
 				),
 				'meta'   => array(
@@ -13854,15 +13936,6 @@ class ET_Builder_Module_Fullwidth_Header extends ET_Builder_Module {
 				),
 			),
 			'button' => array(
-				'button' => array(
-					'label' => esc_html__( 'Button', 'et_builder' ),
-					'css'      => array(
-						'main' => ".et_pb_slider {$this->main_css_element}.et_pb_slide .et_pb_button",
-					),
-				),
-			),
-
-			'button' => array(
 				'button_one' => array(
 					'label' => esc_html__( 'Button One', 'et_builder' ),
 					'css'      => array(
@@ -13901,11 +13974,11 @@ class ET_Builder_Module_Fullwidth_Header extends ET_Builder_Module {
 			),
 			'button_1' => array(
 				'label'    => esc_html__( 'Button One', 'et_builder' ),
-				'selector' => '.header-content .et_pb_button_one',
+				'selector' => '.header-content-container .header-content .et_pb_button_one.et_pb_button',
 			),
 			'button_2' => array(
 				'label'    => esc_html__( 'Button Two', 'et_builder' ),
-				'selector' => '.header-content .et_pb_button_two',
+				'selector' => '.header-content-container .header-content .et_pb_button_two.et_pb_button',
 			),
 			'scroll_button' => array(
 				'label'    => esc_html__( 'Scroll Down Button', 'et_builder' ),
@@ -14948,7 +15021,8 @@ class ET_Builder_Module_Fullwidth_Slider extends ET_Builder_Module {
 			),
 			'slide_button' => array(
 				'label'    => esc_html__( 'Slide Button', 'et_builder' ),
-				'selector' => 'a.et_pb_more_button',
+				'selector' => '.et_pb_slider .et_pb_slide .et_pb_slide_description a.et_pb_more_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 			'slide_controllers' => array(
 				'label'    => esc_html__( 'Slide Controllers', 'et_builder' ),
@@ -15694,6 +15768,7 @@ class ET_Builder_Module_Fullwidth_Map extends ET_Builder_Module {
 			'address_lng',
 			'map_center_map',
 			'mouse_wheel',
+			'mobile_dragging',
 			'admin_label',
 			'module_id',
 			'module_class',
@@ -15702,11 +15777,26 @@ class ET_Builder_Module_Fullwidth_Map extends ET_Builder_Module {
 		$this->fields_defaults = array(
 			'zoom_level'  => array( '18', 'only_default_setting' ),
 			'mouse_wheel' => array( 'on' ),
+			'mobile_dragging' => array( 'on' ),
 		);
 	}
 
 	function get_fields() {
 		$fields = array(
+			'google_api_key' => array(
+				'label'             => esc_html__( 'Google API Key', 'et_builder' ),
+				'type'              => 'text',
+				'option_category'   => 'basic_option',
+				'attributes'        => 'readonly',
+				'additional_button' => sprintf(
+					' <a href="%2$s" target="_blank" class="et_pb_update_google_key button" data-empty_text="%3$s">%1$s</a>',
+					esc_html__( 'Change API Key', 'et_builder' ),
+					esc_url( et_pb_get_options_page_link() ),
+					esc_attr__( 'Add Your API Key', 'et_builder' )
+				),
+				'class' => array( 'et_pb_google_api_key', 'et-pb-helper-field' ),
+				'description'       => et_get_safe_localization( sprintf( __( 'The Maps module uses the Google Maps API and requires a valid Google API Key to function. Before using the map module, please make sure you have added your API key inside the Divi Theme Options panel. Learn more about how to create your Google API Key <a href="%1$s" target="_blank">here</a>.', 'et_builder' ), esc_url( 'http://www.elegantthemes.com/gallery/divi/documentation/map/#gmaps-api-key' ) ) ),
+			),
 			'address' => array(
 				'label'             => esc_html__( 'Map Center Address', 'et_builder' ),
 				'type'              => 'text',
@@ -15744,6 +15834,16 @@ class ET_Builder_Module_Fullwidth_Map extends ET_Builder_Module {
 					'off' => esc_html__( 'Off', 'et_builder' ),
 				),
 				'description' => esc_html__( 'Here you can choose whether the zoom level will be controlled by mouse wheel or not.', 'et_builder' ),
+			),
+			'mobile_dragging' => array(
+				'label'           => esc_html__( 'Draggable on Mobile', 'et_builder' ),
+				'type'            => 'yes_no_button',
+				'option_category' => 'configuration',
+				'options'         => array(
+					'on'  => esc_html__( 'On', 'et_builder' ),
+					'off' => esc_html__( 'Off', 'et_builder' ),
+				),
+				'description' => esc_html__( 'Here you can choose whether or not the map will be draggable on mobile devices.', 'et_builder' ),
 			),
 			'disabled_on' => array(
 				'label'           => esc_html__( 'Disable on', 'et_builder' ),
@@ -15787,6 +15887,8 @@ class ET_Builder_Module_Fullwidth_Map extends ET_Builder_Module {
 		$address_lng  = $this->shortcode_atts['address_lng'];
 		$zoom_level   = $this->shortcode_atts['zoom_level'];
 		$mouse_wheel  = $this->shortcode_atts['mouse_wheel'];
+		$mobile_dragging = $this->shortcode_atts['mobile_dragging'];
+
 
 		wp_enqueue_script( 'google-maps-api' );
 
@@ -15796,7 +15898,7 @@ class ET_Builder_Module_Fullwidth_Map extends ET_Builder_Module {
 
 		$output = sprintf(
 			'<div%5$s class="et_pb_module et_pb_map_container%6$s">
-				<div class="et_pb_map" data-center-lat="%1$s" data-center-lng="%2$s" data-zoom="%3$d" data-mouse-wheel="%7$s"></div>
+				<div class="et_pb_map" data-center-lat="%1$s" data-center-lng="%2$s" data-zoom="%3$d" data-mouse-wheel="%7$s" data-mobile-dragging="%8$s"></div>
 				%4$s
 			</div>',
 			esc_attr( $address_lat ),
@@ -15805,7 +15907,8 @@ class ET_Builder_Module_Fullwidth_Map extends ET_Builder_Module {
 			$all_pins_content,
 			( '' !== $module_id ? sprintf( ' id="%1$s"', esc_attr( $module_id ) ) : '' ),
 			( '' !== $module_class ? sprintf( ' %1$s', esc_attr( $module_class ) ) : '' ),
-			esc_attr( $mouse_wheel )
+			esc_attr( $mouse_wheel ),
+			esc_attr( $mobile_dragging )
 		);
 
 		return $output;
@@ -16358,7 +16461,7 @@ class ET_Builder_Module_Fullwidth_Post_Title extends ET_Builder_Module {
 					'label'    => esc_html__( 'Title', 'et_builder' ),
 					'use_all_caps' => true,
 					'css'      => array(
-						'main' => "{$this->main_css_element} .et_pb_title_container h1",
+						'main' => "{$this->main_css_element} .et_pb_title_container h1.entry-title",
 					),
 				),
 				'meta'   => array(
@@ -16856,7 +16959,8 @@ class ET_Builder_Module_Fullwidth_Post_Slider extends ET_Builder_Module {
 			),
 			'slide_button' => array(
 				'label'    => esc_html__( 'Slide Button', 'et_builder' ),
-				'selector' => 'a.et_pb_more_button',
+				'selector' => '.et_pb_slider a.et_pb_more_button.et_pb_button',
+				'no_space_before_selector' => true,
 			),
 			'slide_controllers' => array(
 				'label'    => esc_html__( 'Slide Controllers', 'et_builder' ),
@@ -17396,6 +17500,19 @@ class ET_Builder_Module_Fullwidth_Post_Slider extends ET_Builder_Module {
 					esc_html( $background_size )
 				),
 			) );
+
+
+			if ( 'initial' === $background_size ) {
+				ET_Builder_Module::set_style( $function_name, array(
+					'selector'    => 'body.ie %%order_class%% .et_pb_slide',
+					'declaration' => sprintf(
+						'-moz-background-size: %1$s;
+						-webkit-background-size: %1$s;
+						background-size: %1$s;',
+						'auto'
+					),
+				) );
+			}
 		}
 
 		if ( '' !== $background_color ) {

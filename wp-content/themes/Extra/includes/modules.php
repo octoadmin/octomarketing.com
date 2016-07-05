@@ -275,6 +275,17 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 				'priority'        => 5,
 				'option_category' => 'configuration',
 			),
+			'ignore_displayed_posts' => array(
+				'label'           => esc_html__( 'Ignore Displayed Posts', 'extra' ),
+				'type'            => 'yes_no_button',
+				'options'         => array(
+					'off' => esc_html__( 'No', 'extra' ),
+					'on'  => esc_html__( 'Yes', 'extra' ),
+				),
+				'description'     => esc_html__( 'Do not display posts that have been displayed on previous modules.', 'extra' ),
+				'priority'        => 5,
+				'option_category' => 'configuration',
+			),
 			'heading_style'               => array(
 				'label'           => esc_html__( 'Heading Style', 'extra' ),
 				'type'            => 'select',
@@ -512,7 +523,7 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 		$output .= sprintf( '<label><input type="checkbox" name="%1$s" value="%2$s" <%%= _.contains( %4$s, \'%2$s\' ) ? checked=\'checked\' : \'\' %%> > %3$s</label><br/>',
 			esc_attr( $name ),
 			esc_attr( '-1' ),
-			esc_html__( 'Current Category', 'extra' ),
+			esc_html__( 'Current Category / Tag / Taxonomy', 'extra' ),
 			esc_attr( $temp_name )
 		);
 
@@ -535,6 +546,8 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 				$this->shortcode_atts[ $field_name ] = 'on' == $this->shortcode_atts[ $field_name ] ? true : false;
 			}
 		}
+
+		$this->shortcode_atts['use_tax_query'] = false;
 	}
 
 	function shortcode_atts() {
@@ -542,16 +555,27 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 	}
 
 	function shortcode_callback( $atts, $content = null, $function_name ) {
+		global $extra_displayed_post_ids;
+
 		$args = array(
 			'post_type'      => 'post',
 			'posts_per_page' => isset( $this->shortcode_atts['posts_per_page'] ) && is_numeric( $this->shortcode_atts['posts_per_page'] ) ? $this->shortcode_atts['posts_per_page'] : 5,
 			'order'          => $this->shortcode_atts['order'],
 			'orderby'        => $this->shortcode_atts['orderby'],
+			'ignore_displayed_posts' => isset( $this->shortcode_atts['ignore_displayed_posts'] ) ? $this->shortcode_atts['ignore_displayed_posts'] : false,
 		);
 
 		if ( 'rating' == $this->shortcode_atts['orderby'] ) {
 			$args['orderby'] = 'meta_value_num';
 			$args['meta_key'] = '_extra_rating_average';
+		}
+
+		if ( ! $extra_displayed_post_ids ) {
+			$extra_displayed_post_ids = array();
+		}
+
+		if ( $args['ignore_displayed_posts'] ) {
+			$args['post__not_in'] = $extra_displayed_post_ids;
 		}
 
 		$args = $this->_pre_wp_query( $args );
@@ -715,14 +739,32 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 		if ( is_customize_preview() && $this->shortcode_atts['term_color'] === extra_global_accent_color() ) {
 			$this->shortcode_atts['module_class'] = $this->shortcode_atts['module_class'] . ' no-term-color-module';
 		}
+
+		if ( isset( $this->shortcode_atts['module_posts']->found_posts ) && 0 < $this->shortcode_atts['module_posts']->found_posts ) {
+			$post_ids = wp_list_pluck( $this->shortcode_atts['module_posts']->posts, 'ID' );
+
+			$extra_displayed_post_ids = array_unique( array_merge( $extra_displayed_post_ids, $post_ids ) );
+		}
 	}
 
 	function make_is_home( $wp_query ) {
 		$wp_query->is_home = true;
 	}
 
+	function append_tax_query_params( $params ) {
+		global $wp_query;
+
+		if ( isset( $wp_query->tax_query->queries ) ) {
+			$params['tax_query'] = $wp_query->tax_query->queries;
+		}
+
+		return $params;
+	}
+
 	function _process_shortcode_atts_category_id() {
 		if ( false !== strpos( $this->shortcode_atts['category_id'], '-1' ) ) {
+			$this->shortcode_atts['use_tax_query'] = true;
+
 			if ( is_category() ) {
 				$current_categoory = get_queried_object_id();
 			} else {
@@ -743,6 +785,8 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 	}
 
 	function _pre_wp_query( $args ) {
+		global $wp_query;
+
 		$this->_process_shortcode_atts_category_id();
 
 		if ( !empty( $this->shortcode_atts['category_id'] ) ) {
@@ -774,6 +818,28 @@ class ET_Builder_Module_Posts extends ET_Builder_Module {
 				$this->shortcode_atts['term_color'] = extra_get_category_color( $term->term_id );
 			} else {
 				unset( $args['tax_query'] );
+			}
+		}
+
+		if ( isset( $wp_query->tax_query->queries ) && $this->shortcode_atts['use_tax_query'] ) {
+			wp_localize_script( 'extra-scripts', 'EXTRA_TAX_QUERY', $wp_query->tax_query->queries );
+
+			$taxonomies = $wp_query->tax_query->queries;
+
+			foreach ( $taxonomies as $taxonomy ) {
+				if ( isset( $taxonomy['taxonomy'] ) && 'category' === $taxonomy['taxonomy'] && ! empty( $this->shortcode_atts['category_id'] ) ) {
+					continue;
+				}
+
+				$args['tax_query'][] = $taxonomy;
+			}
+
+			if ( isset( $args['tax_query'] ) && 1 < count( $args['tax_query'] ) ) {
+				$args['tax_query']['relation'] = 'AND';
+			}
+
+			if ( ! is_home() ) {
+				$args['ignore_sticky_posts'] = 1;
 			}
 		}
 
@@ -1461,6 +1527,16 @@ class ET_Builder_Module_Tabbed_Posts_Tab extends ET_Builder_Module_Posts {
 					'on'  => esc_html__( 'Yes', 'extra' ),
 				),
 				'description'     => esc_html__( 'Only display featured posts.', 'extra' ),
+				'option_category' => 'configuration',
+			),
+			'ignore_displayed_posts' => array(
+				'label'           => esc_html__( 'Ignore Displayed Posts', 'extra' ),
+				'type'            => 'yes_no_button',
+				'options'         => array(
+					'off' => esc_html__( 'No', 'extra' ),
+					'on'  => esc_html__( 'Yes', 'extra' ),
+				),
+				'description'     => esc_html__( 'Do not display posts that have been displayed on previous modules.', 'extra' ),
 				'option_category' => 'configuration',
 			),
 		);
@@ -2212,7 +2288,6 @@ class ET_Builder_Module_Posts_Blog_Feed extends ET_Builder_Module_Posts {
 				),
 				'depends_show_if' => 'excerpt',
 				'description'     => esc_html__( 'Here you can define whether to show "read more" link after the excerpts or not.', 'extra' ),
-				'priority'        => 5,
 				'option_category' => 'configuration',
 			),
 			'show_date'                  => array(
@@ -2953,6 +3028,12 @@ class ET_Builder_Module_Ads_Ad extends ET_Builder_Module {
 				'update_text'        => esc_attr__( 'Set as Image', 'extra' ),
 				'description'        => esc_html__( 'URL of the ad image.', 'extra' ),
 				'option_category'    => 'basic_option',
+			),
+			'img_alt_text'         => array(
+				'label'           => esc_html__( 'Image Alt Text', 'extra' ),
+				'type'            => 'input',
+				'description'     => esc_html__( 'Alternative text for image', 'extra' ),
+				'option_category' => 'basic_option',
 			),
 			'link_url'         => array(
 				'label'           => esc_html__( 'Link URL', 'extra' ),

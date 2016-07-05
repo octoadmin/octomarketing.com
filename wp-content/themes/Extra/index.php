@@ -10,7 +10,7 @@
 					<h1><?php the_archive_title(); ?></h1>
 				<?php } ?>
 
-				<?php if ( is_category() || is_tag() ) { ?>
+				<?php if ( is_extra_tax_layout() ) { ?>
 					<?php extra_tax_layout(); ?>
 				<?php } else { ?>
 					<?php require locate_template( 'index-content.php' ); ?>

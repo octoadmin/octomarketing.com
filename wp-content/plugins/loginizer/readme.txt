@@ -3,7 +3,7 @@ Contributors: loginizer
 Tags: access, admin, Loginizer, login, logs, ban ip, failed login, ip, whitelist ip, blacklist ip, failed attempts, lockouts, hack, authentication, login, security
 Requires at least: 3.0
 Tested up to: 4.5
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -59,6 +59,11 @@ That's it. You're done!
 3. Loginizer Brute Force Settings page
 
 == Changelog ==
+
+= 1.2.0 =
+* [Task] The brute force logs will now be sorted as per the time of failed login attemps
+* [Bug Fix] Dashboard showed wrong permissions if wp-content path had been changed
+* [Bug Fix] Added Directory path to include files which caused issues with some plugins
 
 = 1.1.1 =
 * [Bug Fix] Added ABSPATH instead of get_home_path()

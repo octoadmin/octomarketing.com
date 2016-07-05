@@ -1201,3 +1201,11 @@ if ( ! function_exists( 'et_extra_activate_features' ) ) {
 
 }
 add_action( 'init', 'et_extra_activate_features' );
+
+if ( ! function_exists( 'et_extra_theme_options_link' ) ) {
+	function et_extra_theme_options_link() {
+		return admin_url( 'admin.php?page=et_extra_options' );
+	}
+}
+// correct the theme options link via filter
+add_filter( 'et_pb_theme_options_link', 'et_extra_theme_options_link' );

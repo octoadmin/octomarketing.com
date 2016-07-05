@@ -652,6 +652,26 @@ add_filter( 'extra_customizer_register_general_layout_settings', 'extra_customiz
 
 function extra_customizer_register_general_typography_settings() {
 	return array(
+		'body_heading_font_size'     => array(
+			'label'       => esc_html__( 'Heading Text Size', 'extra' ),
+			'type'        => 'range',
+			'default'     => '16',
+			'input_attrs' => array(
+				'min'  => 10,
+				'max'  => 72,
+				'step' => 1,
+			),
+			'value_bind'  => array(
+				'style'              => 'dynamic_selectors_value_format',
+				'property_selectors' => array(
+					array(
+						'property'  => 'font-size',
+						'format'    => '%value%px',
+						'selectors' => extra_get_dynamic_selector( 'body_heading' ),
+					),
+				),
+			),
+		),
 		'body_font_size'             => array(
 			'label'       => esc_html__( 'Body Text Size', 'extra' ),
 			'type'        => 'range',
@@ -670,6 +690,26 @@ function extra_customizer_register_general_typography_settings() {
 						'selectors' => array(
 							'body',
 						),
+					),
+				),
+			),
+		),
+		'body_heading_line_height'   => array(
+			'label'       => esc_html__( 'Heading Line Height', 'extra' ),
+			'type'        => 'range',
+			'default'     => '1.7',
+			'input_attrs' => array(
+				'min'  => 0.8,
+				'max'  => 3,
+				'step' => 0.1,
+			),
+			'value_bind'  => array(
+				'style'              => 'dynamic_selectors_value_format',
+				'property_selectors' => array(
+					array(
+						'property'  => 'line-height',
+						'format'    => '%value%em',
+						'selectors' => extra_get_dynamic_selector( 'body_heading' ),
 					),
 				),
 			),
@@ -1081,6 +1121,7 @@ function extra_customizer_register_header_and_navigation_primary_nav_settings() 
 						'#et-menu .sub-menu li.mega-menu-featured > a:after',
 						'#et-menu .sub-menu li.menu-item-has-children > a:after',
 						'#et-extra-mobile-menu .sub-menu li.mega-menu-featured > a:after',
+						'#et-extra-mobile-menu li a',
 						'#et-menu li.mega-menu-featured > ul li .title',
 						'#et-extra-mobile-menu li.mega-menu-featured > ul li .title',
 						'#et-menu li.mega-menu-featured > ul li .featured-post h2',
@@ -1285,7 +1326,7 @@ function extra_customizer_register_header_and_navigation_secondary_nav_settings(
 				'style'              => 'dynamic_selectors',
 				'property_selectors' => array(
 					'background-color' => array(
-						'#et-secondary-menu li > ul',
+						'#et-secondary-nav #et-secondary-menu',
 					),
 				),
 			),

@@ -2,7 +2,7 @@ var ET_PageBuilder = ET_PageBuilder || {};
 
 window.wp = window.wp || {};
 
-window.et_builder_version = '2.7.5';
+window.et_builder_version = '2.7.8';
 
 ( function($) {
 	var et_error_modal_shown = window.et_error_modal_shown,
@@ -7782,7 +7782,9 @@ window.et_builder_version = '2.7.5';
 
 			et_pb_globals_loaded = 0,
 
-			et_pb_processed_yoast_content = false;
+			et_pb_processed_yoast_content = false,
+
+			et_pb_quick_tags_init_done = {};
 
 		ET_PageBuilder.Events = ET_PageBuilder_Events;
 
@@ -10283,9 +10285,13 @@ window.et_builder_version = '2.7.5';
 				$( '#' + textarea_id ).val( $.trim( content ) );
 			}
 
-			// generate quick tag buttons for the editor in Text mode
-			( typeof tinyMCEPreInit.mceInit[textarea_id] !== "undefined" ) ? quicktags( { id : textarea_id } ) : quicktags( tinyMCEPreInit.qtInit[textarea_id] );
-			QTags._buttonsInit();
+			// initiate quicktags only once to avoid issue with duplication of tags
+			if ( ! et_pb_quick_tags_init_done[textarea_id] && 'content' !== textarea_id ) {
+				// generate quick tag buttons for the editor in Text mode
+				( typeof tinyMCEPreInit.mceInit[textarea_id] !== "undefined" ) ? quicktags( { id : textarea_id } ) : quicktags( tinyMCEPreInit.qtInit[textarea_id] );
+				QTags._buttonsInit();
+				et_pb_quick_tags_init_done[textarea_id] = true;
+			}
 
 			// Enabling publish button + removes disable_publish mark
 			if ( ! wp.heartbeat || ! wp.heartbeat.hasConnectionError() ) {
@@ -10302,6 +10308,9 @@ window.et_builder_version = '2.7.5';
 				if ( typeof window.tinyMCE.get( textarea_id ) !== 'undefined' ) {
 					window.tinyMCE.remove( '#' + textarea_id );
 				}
+
+				// set the quick tags init variable to false for current textarea so quicktags be initiated properly next time
+				et_pb_quick_tags_init_done[textarea_id] = false;
 			}
 		}
 
@@ -10515,7 +10524,21 @@ window.et_builder_version = '2.7.5';
 
 				$section_bg_color_option = 'section' === $container.data( 'module_type' ) ? $container.find( '#et_pb_background_color' ) : '',
 
-				$gutter_width_option = $container.find( '#et_pb_gutter_width' );
+				$gutter_width_option = $container.find( '#et_pb_gutter_width' ),
+
+				$google_maps_api_option = $container.find( '#et_pb_google_api_key' ),
+				$google_maps_api_button = $container.find( '.et_pb_update_google_key' );
+
+			if ( $google_maps_api_option.length ) {
+				$google_maps_api_button.attr( 'href', et_pb_options.options_page_url );
+
+				if ( '' === et_pb_options.google_api_key ) {
+					$google_maps_api_option.addClass( 'et_pb_hidden_field' );
+					$google_maps_api_button.text( $google_maps_api_button.data( 'empty_text' ) ).addClass( 'et_pb_no_field_visible' );
+				} else {
+					$google_maps_api_option.val( et_pb_options.google_api_key );
+				}
+			}
 
 			if ( '' !== $section_bg_color_option && '' !== et_pb_options.page_section_bg_color ) {
 				if ( '' === $section_bg_color_option.val() ) {

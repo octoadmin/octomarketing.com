@@ -79,6 +79,35 @@ function wck_sas_create_box(){
 
 		/* create the box */
 		new Wordpress_Creation_Kit( $args );
+
+
+        /* set up the extra settings array */
+        $sas_extra_options = array();
+
+        if( file_exists( dirname( __FILE__ ) . '/wordpress-creation-kit-api/fields/map.php' ) )
+            $sas_extra_options[] = array( 'type' => 'text', 'title' => __( 'Google Maps API', 'wck' ), 'description' => __( 'Enter your Google Maps API key ( <a href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend" target="_blank">Get your API key</a> )', 'wck' ), 'required' => false );
+
+        /* if there are extra options add the box */
+        if( !empty( $sas_extra_options ) ) {
+
+            /* set up the box arguments */
+            $args = array(
+                'metabox_id' => 'wck_extra_options',
+                'metabox_title' => __( 'Extra Settings', 'wck' ),
+                'post_type' => 'sas-page',
+                'meta_name' => 'wck_extra_options',
+                'meta_array' => $sas_extra_options,
+                'context' 	=> 'option',
+                'single' => true,
+                'sortable' => false
+            );
+
+            /* create the box */
+            if (file_exists ($wck_premium_update . 'update-checker.php'))
+                new Wordpress_Creation_Kit( $args );
+
+        }
+
 	}
 }
 
@@ -90,6 +119,14 @@ function wck_sas_welcome($hook){
 		$default_plugin_headers = get_plugin_data($plugin_path);
 		$plugin_name = $default_plugin_headers['Name'];
 		$plugin_version = $default_plugin_headers['Version'];
+
+        if( version_compare(PHP_VERSION, '5.3.0') < 0 ) { ?>
+            <div class="notice-error notice">
+                <p>
+                    <?php _e('<strong>You are using a very old version of PHP</strong> (5.2.x or older) which has serious security and performance issues. Please ask your hoster to provide you with an upgrade path to 5.6 or 7.0','wck'); ?>
+                </p>
+            </div>
+        <?php }
 ?>
 		<div class="wrap about-wrap">
 			<h1><?php printf( __( 'Welcome to %s', 'wck' ), $plugin_name ); ?></h1>

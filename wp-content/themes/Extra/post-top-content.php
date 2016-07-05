@@ -90,10 +90,11 @@ if ( et_has_post_format( 'quote' ) ) {
 
 			printf(
 				'<div class="gallery_image carousel-item %s">
-					<img src="%s" />
+					<img src="%s" alt="%s" />
 				</div>',
 				esc_attr( $thumbnail_size ),
-				esc_attr( $thumb_src )
+				esc_attr( $thumb_src ),
+				esc_attr( get_the_title() )
 			);
 		}
 		?>
