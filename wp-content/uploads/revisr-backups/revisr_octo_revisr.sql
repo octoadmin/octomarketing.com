@@ -19,12 +19,12 @@ CREATE TABLE `octo_revisr` (
   `event` varchar(42) NOT NULL,
   `user` varchar(60) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `octo_revisr` WRITE;
 /*!40000 ALTER TABLE `octo_revisr` DISABLE KEYS */;
-INSERT INTO `octo_revisr` VALUES (1,'2016-07-13 08:59:47','Error backing up the database.','error','ian.lancaster'),(2,'2016-07-13 08:59:53','Committed <a href=\"http://localhost/octomarketing.com/wp-admin/admin.php?page=revisr_view_commit&commit=b1acc0b&success=true\">#b1acc0b</a> to the local repository.','commit','ian.lancaster'),(3,'2016-07-13 09:00:01','Successfully pushed 1 commit to origin/master.','push','ian.lancaster'),(4,'2016-07-13 09:31:01','Error backing up the database.','error','Revisr Bot'),(5,'2016-07-13 09:31:01','The daily backup was successful.','backup','Revisr Bot'),(6,'2016-07-13 09:38:54','Successfully pushed 0 commits to origin/master.','push','ian.lancaster'),(7,'2016-07-13 09:38:54','Error contacting webhook URL.','error','ian.lancaster'),(8,'2016-07-13 09:44:37','Error backing up the database.','error','ian.lancaster');
+INSERT INTO `octo_revisr` VALUES (1,'2016-07-13 08:59:47','Error backing up the database.','error','ian.lancaster'),(2,'2016-07-13 08:59:53','Committed <a href=\"http://localhost/octomarketing.com/wp-admin/admin.php?page=revisr_view_commit&commit=b1acc0b&success=true\">#b1acc0b</a> to the local repository.','commit','ian.lancaster'),(3,'2016-07-13 09:00:01','Successfully pushed 1 commit to origin/master.','push','ian.lancaster'),(4,'2016-07-13 09:31:01','Error backing up the database.','error','Revisr Bot'),(5,'2016-07-13 09:31:01','The daily backup was successful.','backup','Revisr Bot'),(6,'2016-07-13 09:38:54','Successfully pushed 0 commits to origin/master.','push','ian.lancaster'),(7,'2016-07-13 09:38:54','Error contacting webhook URL.','error','ian.lancaster'),(8,'2016-07-13 09:44:37','Error backing up the database.','error','ian.lancaster'),(9,'2016-07-13 09:46:04','Successfully backed up the database.','backup','ian.lancaster'),(10,'2016-07-13 09:46:10','Successfully pushed 1 commit to origin/master.','push','ian.lancaster'),(11,'2016-07-13 09:46:10','Error contacting webhook URL.','error','ian.lancaster');
 /*!40000 ALTER TABLE `octo_revisr` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
