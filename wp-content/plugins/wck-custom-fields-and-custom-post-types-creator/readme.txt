@@ -6,7 +6,7 @@ Tags: custom fields, custom field, wordpress custom fields, custom post type, cu
 
 Requires at least: 3.1
 Tested up to: 4.5.3
-Stable tag: 1.2.9
+Stable tag: 1.3.0
 
 A must have tool for creating custom fields, custom post types and taxonomies, fast and without any programming knowledge.
 

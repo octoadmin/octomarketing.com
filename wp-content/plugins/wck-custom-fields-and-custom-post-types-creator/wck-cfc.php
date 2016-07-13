@@ -494,8 +494,10 @@ function wck_cfc_change_meta_key( $meta, $id, $values, $element_id ){
             }
 
             // Page Template
-            if ($wck_cfc_args[0]['page-template'] != $values['page-template']) {
-                update_post_meta($id, 'wck_cfc_page_template_arg', $values['page-template']);
+            if( isset( $wck_cfc_args[0]['page-template'] ) && $values['page-template'] ) {
+                if ($wck_cfc_args[0]['page-template'] != $values['page-template']) {
+                    update_post_meta($id, 'wck_cfc_page_template_arg', $values['page-template']);
+                }
             }
         }
 	}
