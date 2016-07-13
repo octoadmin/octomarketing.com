@@ -798,7 +798,42 @@ class Wordpress_Creation_Kit{
 	}
 	
 
+	/* Checks to see wether the current user can modify data */
+	function wck_verify_user_capabilities( $context, $meta = '', $id = 0 ) {
 
+		$return = true;
+
+		// Meta is an option
+		if( $context == 'option' && !current_user_can( 'manage_options' ) )
+			$return = false;
+
+		// Meta is post related
+		if( $context == 'post_meta' && is_user_logged_in() ) {
+			
+			// Current user must be able to edit posts
+			if( !current_user_can( 'edit_posts' ) )
+				$return = false;
+
+			// If the user can't edit others posts the current post must be his/hers
+			elseif( !current_user_can( 'edit_others_posts' ) ) {
+
+				$current_post = get_post( $id );
+				$current_user = wp_get_current_user();
+
+				if( $current_user->ID != $current_post->post_author )
+					$return = false;
+
+			}
+
+		}
+
+		// Return
+		if( $return )
+			return $return;
+		else
+			return array( 'error' => __( 'You are not allowed to do this.', 'wck' ), 'errorfields' => '' );
+
+	}
 
 
 	/* ajax add a reccord to the meta */
@@ -816,6 +851,13 @@ class Wordpress_Creation_Kit{
 			$values = $_POST['values'];
 		else
 			$values = array();
+
+
+		// Security checks
+		if( true !== ( $error = self::wck_verify_user_capabilities( $this->args['context'], $meta, $id ) ) ) {
+			header( 'Content-type: application/json' );
+			die( json_encode( $error ) );
+		}
 		
 		$values = apply_filters( "wck_add_meta_filter_values_{$meta}", $values );
 
@@ -876,7 +918,14 @@ class Wordpress_Creation_Kit{
 			$element_id = 0;
 		if( !empty( $_POST['values'] ) )
 			$values = $_POST['values'];
-		
+
+
+		// Security checks
+		if( true !== ( $error = self::wck_verify_user_capabilities( $this->args['context'], $meta, $id ) ) ) {
+			header( 'Content-type: application/json' );
+			die( json_encode( $error ) );
+		}
+
 		
 		$values = apply_filters( "wck_update_meta_filter_values_{$meta}", $values, $element_id );
 		
@@ -1007,6 +1056,14 @@ class Wordpress_Creation_Kit{
 			$element_id = absint( $_POST['element_id'] );
 		else 
 			$element_id = '';
+
+
+		// Security checks
+		if( true !== ( $error = self::wck_verify_user_capabilities( $this->args['context'], $meta, $id ) ) ) {
+			header( 'Content-type: application/json' );
+			die( json_encode( $error ) );
+		}
+
 		
 		if( $this->args['context'] == 'post_meta' )
 			$results = get_post_meta($id, $meta, true);
@@ -1073,6 +1130,12 @@ class Wordpress_Creation_Kit{
 			$elements_id = $_POST['values'];
 		else 
 			$elements_id = array();
+
+		// Security checks
+		if( true !== ( $error = self::wck_verify_user_capabilities( $this->args['context'], $meta, $id ) ) ) {
+			header( 'Content-type: application/json' );
+			die( json_encode( $error ) );
+		}
 		
 		do_action( 'wck_before_reorder_meta', $meta, $id, $elements_id );
 		
