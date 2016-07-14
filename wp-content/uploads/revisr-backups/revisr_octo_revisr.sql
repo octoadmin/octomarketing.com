@@ -19,12 +19,12 @@ CREATE TABLE `octo_revisr` (
   `event` varchar(42) NOT NULL,
   `user` varchar(60) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `octo_revisr` WRITE;
 /*!40000 ALTER TABLE `octo_revisr` DISABLE KEYS */;
-INSERT INTO `octo_revisr` VALUES (1,'2016-07-13 22:56:26','Successfully backed up the database.','backup','ian.lancaster'),(2,'2016-07-13 22:56:30','Successfully pushed 1 commit to origin/master.','push','ian.lancaster'),(3,'2016-07-13 22:56:52','Successfully pushed 0 commits to origin/master.','push','ian.lancaster');
+INSERT INTO `octo_revisr` VALUES (1,'2016-07-13 22:56:26','Successfully backed up the database.','backup','ian.lancaster'),(2,'2016-07-13 22:56:30','Successfully pushed 1 commit to origin/master.','push','ian.lancaster'),(3,'2016-07-13 22:56:52','Successfully pushed 0 commits to origin/master.','push','ian.lancaster'),(4,'2016-07-13 22:57:17','Successfully backed up the database.','backup','ian.lancaster'),(5,'2016-07-13 22:57:22','Successfully pushed 1 commit to origin/master.','push','ian.lancaster');
 /*!40000 ALTER TABLE `octo_revisr` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
