@@ -24,12 +24,12 @@ CREATE TABLE `octo_aryo_activity_log` (
   `hist_ip` varchar(55) NOT NULL DEFAULT '127.0.0.1',
   `hist_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`histid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `octo_aryo_activity_log` WRITE;
 /*!40000 ALTER TABLE `octo_aryo_activity_log` DISABLE KEYS */;
-INSERT INTO `octo_aryo_activity_log` VALUES (1,'administrator','activated','Plugin','','Activity Log',0,1,'::1',1468449728),(2,'administrator','activated','Plugin','','Better Search Replace',0,1,'::1',1468450162),(3,'administrator','activated','Plugin','','MiwoFTP',0,1,'::1',1468450192),(4,'administrator','deactivated','Plugin','','Admin Menu Editor',0,1,'::1',1468450381),(5,'guest','logged_in','User','','ian-lancaster',1,1,'::1',1468452073);
+INSERT INTO `octo_aryo_activity_log` VALUES (1,'administrator','activated','Plugin','','Activity Log',0,1,'::1',1468449728),(2,'administrator','activated','Plugin','','Better Search Replace',0,1,'::1',1468450162),(3,'administrator','activated','Plugin','','MiwoFTP',0,1,'::1',1468450192),(4,'administrator','deactivated','Plugin','','Admin Menu Editor',0,1,'::1',1468450381),(5,'guest','logged_in','User','','ian-lancaster',1,1,'::1',1468452073),(6,'guest','logged_in','User','','ian-lancaster',1,1,'::1',1468452174);
 /*!40000 ALTER TABLE `octo_aryo_activity_log` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
