@@ -19,12 +19,12 @@ CREATE TABLE `octo_revisr` (
   `event` varchar(42) NOT NULL,
   `user` varchar(60) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `octo_revisr` WRITE;
 /*!40000 ALTER TABLE `octo_revisr` DISABLE KEYS */;
-INSERT INTO `octo_revisr` VALUES (1,'2016-07-13 09:08:13','Error pulling changes from the remote repository.','error','ian.lancaster'),(2,'2016-07-13 09:10:48','There was an error committing the changes to the local repository.','error','ian.lancaster'),(3,'2016-07-13 09:16:33','Successfully backed up the database.','backup','Revisr Bot'),(4,'2016-07-13 09:16:34','The daily backup was successful.','backup','Revisr Bot'),(5,'2016-07-13 09:20:23','Error pushing changes to the remote repository.','error','ian.lancaster'),(6,'2016-07-13 09:23:17','Successfully imported the database. <a href=\"http://octomarketing.com/wp-admin/admin-post.php?action=process_revert&amp;revert_type=db&amp;db_hash=b6f6c36&amp;revisr_revert_nonce=6234d23248\">Undo</a>','import','ian.lancaster');
+INSERT INTO `octo_revisr` VALUES (1,'2016-07-13 22:56:26','Successfully backed up the database.','backup','ian.lancaster'),(2,'2016-07-13 22:56:30','Successfully pushed 1 commit to origin/master.','push','ian.lancaster'),(3,'2016-07-13 22:56:52','Successfully pushed 0 commits to origin/master.','push','ian.lancaster'),(4,'2016-07-13 22:57:17','Successfully backed up the database.','backup','ian.lancaster'),(5,'2016-07-13 22:57:22','Successfully pushed 1 commit to origin/master.','push','ian.lancaster');
 /*!40000 ALTER TABLE `octo_revisr` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
